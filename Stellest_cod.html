@@ -36,19 +36,21 @@
       content: "";
       position: absolute;
       left: -10%;
-      top: 48%;
+      top: 50%;
       width: 120%;
       height: 1px;
       background: linear-gradient(90deg, transparent, rgba(125, 205, 255, 0.9), transparent);
       box-shadow: 0 0 28px rgba(72, 175, 255, 0.65);
-      opacity: 0.7;
+      opacity: 0.65;
+      z-index: 1;
+      pointer-events: none;
     }
 
     .model-wrap {
       position: absolute;
       left: 0;
       top: 0;
-      width: 64%;
+      width: 62%;
       height: 100%;
       z-index: 2;
     }
@@ -151,6 +153,12 @@
       box-shadow: 0 0 34px rgba(56, 164, 255, 0.28);
     }
 
+    .hint {
+      margin-top: 14px;
+      font-size: 13px;
+      color: rgba(234, 247, 255, 0.48);
+    }
+
     @media (max-width: 900px) {
       .stellest-hero {
         min-height: 900px;
@@ -202,16 +210,19 @@
   <section class="stellest-hero">
     <div class="model-wrap">
       <model-viewer
+        id="stellestModel"
         src="./Stellest%202.0.glb"
         camera-controls
         autoplay
-        auto-rotate
-        rotation-per-second="8deg"
         exposure="1.2"
         shadow-intensity="0"
         camera-orbit="0deg 76deg 4.3m"
+        min-camera-orbit="0deg 76deg 4.3m"
+        max-camera-orbit="0deg 76deg 4.3m"
         field-of-view="28deg"
-        interaction-prompt="none">
+        interaction-prompt="none"
+        disable-pan
+        disable-zoom>
       </model-viewer>
     </div>
 
@@ -231,7 +242,38 @@
       <a class="button" href="https://miroptikilubertsy.ru/stellest_linzy_kontrol_miopii_u_detei">
         Узнать подробнее →
       </a>
+
+      <div class="hint">3D-анимация линзы Stellest</div>
     </div>
   </section>
+
+  <script>
+    const model = document.querySelector('#stellestModel');
+
+    model.addEventListener('load', () => {
+      console.log('GLB загружен');
+      console.log('Анимации внутри GLB:', model.availableAnimations);
+
+      if (model.availableAnimations && model.availableAnimations.length > 0) {
+        model.animationName = model.availableAnimations[0];
+        model.currentTime = 0;
+        model.play({ repetitions: Infinity });
+      } else {
+        console.warn('В GLB нет экспортированной анимации');
+      }
+    });
+
+    model.addEventListener('mouseenter', () => {
+      if (model.availableAnimations && model.availableAnimations.length > 0) {
+        model.play({ repetitions: Infinity });
+      }
+    });
+
+    document.addEventListener('click', () => {
+      if (model.availableAnimations && model.availableAnimations.length > 0) {
+        model.play({ repetitions: Infinity });
+      }
+    });
+  </script>
 </body>
 </html>
