@@ -32,7 +32,7 @@
       height: 100vh;
       overflow: hidden;
       background:
-        radial-gradient(circle at 30% 48%, rgba(70, 170, 255, 0.28) 0%, rgba(7, 24, 39, 0.75) 38%, rgba(2, 8, 18, 1) 78%),
+        radial-gradient(circle at 30% 48%, rgba(70, 170, 255, 0.26) 0%, rgba(7, 24, 39, 0.72) 38%, rgba(2, 8, 18, 1) 78%),
         linear-gradient(135deg, #061827 0%, #020812 100%);
     }
 
@@ -43,9 +43,9 @@
       top: 50%;
       width: 120%;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(125, 205, 255, 0.85), transparent);
-      box-shadow: 0 0 28px rgba(72, 175, 255, 0.65);
-      opacity: 0.65;
+      background: linear-gradient(90deg, transparent, rgba(125, 205, 255, 0.72), transparent);
+      box-shadow: 0 0 28px rgba(72, 175, 255, 0.55);
+      opacity: 0.55;
       z-index: 1;
       pointer-events: none;
     }
@@ -61,10 +61,10 @@
 
     .content-card {
       position: absolute;
-      right: 7%;
+      right: 5%;
       top: 50%;
       transform: translateY(-50%);
-      width: 420px;
+      width: 390px;
       z-index: 3;
       color: #eaf7ff;
     }
@@ -78,7 +78,7 @@
     }
 
     .title {
-      font-size: 76px;
+      font-size: 66px;
       line-height: 0.95;
       font-weight: 300;
       letter-spacing: -2px;
@@ -88,15 +88,15 @@
     }
 
     .subtitle {
-      font-size: 19px;
+      font-size: 17px;
       line-height: 1.45;
       text-transform: uppercase;
       color: rgba(234, 247, 255, 0.82);
-      margin-bottom: 34px;
+      margin-bottom: 30px;
     }
 
     .info-box {
-      padding: 26px 30px;
+      padding: 24px 28px;
       border: 1px solid rgba(137, 207, 255, 0.45);
       border-radius: 22px;
       background: rgba(4, 20, 36, 0.58);
@@ -107,7 +107,7 @@
     }
 
     .num {
-      font-size: 54px;
+      font-size: 52px;
       line-height: 1;
       font-weight: 700;
       color: #8bcfff;
@@ -115,15 +115,15 @@
     }
 
     .label {
-      font-size: 25px;
+      font-size: 24px;
       line-height: 1.2;
       color: #8bcfff;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       text-transform: uppercase;
     }
 
     .text {
-      font-size: 17px;
+      font-size: 16px;
       line-height: 1.55;
       color: rgba(234, 247, 255, 0.88);
     }
@@ -132,7 +132,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      margin-top: 34px;
+      margin-top: 30px;
       padding: 15px 28px;
       border: 1px solid rgba(137, 207, 255, 0.6);
       border-radius: 999px;
@@ -241,16 +241,16 @@
 
     const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(
-  28,
-  container.clientWidth / container.clientHeight,
-  0.1,
-  100
-);
+    const camera = new THREE.PerspectiveCamera(
+      28,
+      container.clientWidth / container.clientHeight,
+      0.1,
+      100
+    );
 
-camera.position.set(0.35, -0.35, 5.4);
-camera.up.set(0, 1, 0);
-camera.lookAt(0, 0, 0);
+    camera.position.set(0.35, -0.35, 5.4);
+    camera.up.set(0, 1, 0);
+    camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -264,25 +264,26 @@ camera.lookAt(0, 0, 0);
 
     container.appendChild(renderer.domElement);
 
-    const ambient = new THREE.AmbientLight(0x9fdcff, 1.35);
+    const ambient = new THREE.AmbientLight(0x9fdcff, 1.7);
     scene.add(ambient);
 
-    const keyLight = new THREE.DirectionalLight(0xb8e9ff, 2.5);
-    keyLight.position.set(-3, -4, 3);
+    const keyLight = new THREE.DirectionalLight(0xd7f4ff, 3.0);
+    keyLight.position.set(-3, -4, 4);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x4ab8ff, 1.8);
-    rimLight.position.set(3, -2, 1);
+    const rimLight = new THREE.DirectionalLight(0x62c9ff, 2.4);
+    rimLight.position.set(3, -2, 2);
     scene.add(rimLight);
 
-    const frontLight = new THREE.PointLight(0x6dc8ff, 2.8, 8);
-    frontLight.position.set(0, -2.2, 0.4);
+    const frontLight = new THREE.PointLight(0x8cdbff, 3.5, 9);
+    frontLight.position.set(0, -2.3, 1.2);
     scene.add(frontLight);
 
     let mixer = null;
     let modelRoot = null;
-    const clock = new THREE.Clock();
+    let introFinished = false;
 
+    const clock = new THREE.Clock();
     const loader = new GLTFLoader();
 
     loader.load(
@@ -298,23 +299,57 @@ camera.lookAt(0, 0, 0);
             name.includes("background") ||
             name.includes("floor") ||
             name.includes("strip") ||
-            name.includes("light")
+            name.includes("light") ||
+            name.includes("camera")
           ) {
             obj.visible = false;
           }
 
-          if (obj.isMesh) {
-            obj.frustumCulled = false;
+          if (!obj.isMesh) return;
 
-            if (obj.material) {
-              obj.material.transparent = true;
-              obj.material.depthWrite = false;
-              obj.material.side = THREE.DoubleSide;
+          obj.frustumCulled = false;
 
-              if (obj.material.color) {
-                obj.material.color.convertSRGBToLinear();
-              }
-            }
+          if (name.includes("micro")) {
+            obj.material = new THREE.MeshBasicMaterial({
+              color: new THREE.Color(0x8fdcff),
+              transparent: true,
+              opacity: 1.0,
+              side: THREE.DoubleSide,
+              depthTest: false,
+              depthWrite: false
+            });
+
+            obj.renderOrder = 20;
+          }
+
+          else if (name.includes("edge") || name.includes("glow")) {
+            obj.material = new THREE.MeshBasicMaterial({
+              color: new THREE.Color(0x8bdfff),
+              transparent: true,
+              opacity: 0.95,
+              side: THREE.DoubleSide,
+              depthTest: false,
+              depthWrite: false
+            });
+
+            obj.renderOrder = 15;
+          }
+
+          else if (name.includes("lens") || name.includes("glass")) {
+            obj.material = new THREE.MeshPhysicalMaterial({
+              color: new THREE.Color(0x7fcfff),
+              roughness: 0.04,
+              metalness: 0.0,
+              transmission: 0.18,
+              transparent: true,
+              opacity: 0.30,
+              side: THREE.DoubleSide,
+              depthWrite: false,
+              clearcoat: 1.0,
+              clearcoatRoughness: 0.04
+            });
+
+            obj.renderOrder = 5;
           }
         });
 
@@ -327,7 +362,7 @@ camera.lookAt(0, 0, 0);
         modelRoot.position.z -= center.z;
 
         const maxSize = Math.max(size.x, size.y, size.z);
-        const scale = 2.85 / maxSize;
+        const scale = 2.35 / maxSize;
         modelRoot.scale.setScalar(scale);
 
         modelRoot.position.x = -0.55;
@@ -346,13 +381,19 @@ camera.lookAt(0, 0, 0);
           gltf.animations.forEach((clip) => {
             const action = mixer.clipAction(clip);
             action.reset();
-            action.setLoop(THREE.LoopRepeat, Infinity);
-            action.clampWhenFinished = false;
+            action.setLoop(THREE.LoopOnce, 1);
+            action.clampWhenFinished = true;
+            action.enabled = true;
             action.play();
           });
 
+          setTimeout(() => {
+            introFinished = true;
+          }, 4600);
+
           statusText.textContent = "3D-анимация запущена";
         } else {
+          introFinished = true;
           statusText.textContent = "GLB загрузился, но внутри нет анимаций";
         }
       },
@@ -377,6 +418,11 @@ camera.lookAt(0, 0, 0);
 
       if (mixer) {
         mixer.update(delta);
+      }
+
+      if (modelRoot && introFinished) {
+        const t = clock.elapsedTime;
+        modelRoot.rotation.y = Math.sin(t * 0.55) * 0.16;
       }
 
       renderer.render(scene, camera);
