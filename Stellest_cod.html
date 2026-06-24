@@ -207,40 +207,45 @@
     const mouse = new THREE.Vector2(0, 0);
     const targetRotation = new THREE.Vector2(0, 0);
 
-    const colorMicroBase = new THREE.Color(0x5caeff);
-    const colorMicroHover = new THREE.Color(0xd3f6ff);
+    // Новые настройки цветов для выразительности
+    const colorMicroBase = new THREE.Color(0x8bcfff); // Более светлый базовый цвет
+    const colorMicroHover = new THREE.Color(0xffffff); // Уход в чистый белый при наведении
+    const emissiveBase = new THREE.Color(0x1890ff); // Базовое синее свечение изнутри
+    const emissiveHover = new THREE.Color(0x62c9ff); // Яркое голубое свечение при наведении
 
+    // Обновленный материал колец
     const microMaterial = new THREE.MeshPhysicalMaterial({
       color: colorMicroBase,
+      emissive: emissiveBase,       // Излучение света
+      emissiveIntensity: 0.5,       // Интенсивность изначального свечения
       transparent: true,
-      opacity: 0.7,
-      roughness: 0.2,
-      transmission: 0.5,
+      opacity: 0.85,                // Кольца изначально более плотные и видимые
+      roughness: 0.1,
+      transmission: 0.2,            // Снижено светопропускание (выделяет кольца на фоне линзы)
       side: THREE.DoubleSide,
       depthWrite: false
     });
 
     const edgeMaterial = new THREE.MeshBasicMaterial({
-      color: new THREE.Color(0x62c9ff),
+      color: new THREE.Color(0x8bcfff),
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.9,
       side: THREE.DoubleSide,
       depthWrite: false
     });
 
-    // Обновленный материал стекла: оригинальный цвет + физика оптики
     const lensMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x7fcfff), // Ваш оригинальный голубой цвет
-      transmission: 0.95, // Максимальное светопропускание (эффект стекла)
-      opacity: 1.0,       // Для физического стекла с transmission opacity должна быть 1.0
+      color: new THREE.Color(0x7fcfff), 
+      transmission: 0.95, 
+      opacity: 1.0,       
       metalness: 0,
-      roughness: 0.02,    // Практически гладкое
-      ior: 1.52,          // Индекс преломления оптической линзы
-      thickness: 0.6,     // Толщина для искажения фона (эффект преломления)
-      clearcoat: 1.0,     // Идеальный глянцевый блик
+      roughness: 0.02,    
+      ior: 1.52,          
+      thickness: 0.6,     
+      clearcoat: 1.0,     
       clearcoatRoughness: 0.02,
-      attenuationColor: new THREE.Color(0x5caeff), // Объемный цвет (края выглядят насыщеннее)
-      attenuationDistance: 2.0, // Глубина проникновения света
+      attenuationColor: new THREE.Color(0x5caeff), 
+      attenuationDistance: 2.0, 
       side: THREE.DoubleSide,
       transparent: true,
       depthWrite: false
@@ -353,12 +358,16 @@
         modelRoot.rotation.x += (targetRotation.x - modelRoot.rotation.x) * delta * 4;
         modelRoot.rotation.y += (targetRotation.y - modelRoot.rotation.y) * delta * 4;
 
+        // Плавная анимация новых параметров при наведении
         const targetHoverVal = isHoveringMicro ? 1 : 0;
         hoverProgress += (targetHoverVal - hoverProgress) * delta * 6;
 
-        microMaterial.opacity = 0.7 + (hoverProgress * 0.3);
+        microMaterial.opacity = 0.85 + (hoverProgress * 0.15); // Небольшой прирост видимости
+        microMaterial.emissiveIntensity = 0.5 + (hoverProgress * 0.5); // Усиливаем свечение
         microMaterial.color.lerpColors(colorMicroBase, colorMicroHover, hoverProgress);
-        edgeMaterial.opacity = 0.85 + (hoverProgress * 0.15);
+        microMaterial.emissive.lerpColors(emissiveBase, emissiveHover, hoverProgress);
+        
+        edgeMaterial.opacity = 0.9 + (hoverProgress * 0.1);
       }
 
       renderer.render(scene, camera);
