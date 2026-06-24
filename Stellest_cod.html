@@ -106,7 +106,7 @@
       font-size: 15px;
       line-height: 1.6;
       color: rgba(255, 255, 255, 0.75);
-      margin-bottom: 0; /* Убрали нижний отступ, так как кнопки больше нет */
+      margin-bottom: 0; 
     }
 
     .popup-line {
@@ -228,16 +228,19 @@
       depthWrite: false
     });
 
+    // Обновленный материал стекла: оригинальный цвет + физика оптики
     const lensMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0xffffff,
-      transmission: 0.96,
-      opacity: 1.0,
+      color: new THREE.Color(0x7fcfff), // Ваш оригинальный голубой цвет
+      transmission: 0.95, // Максимальное светопропускание (эффект стекла)
+      opacity: 1.0,       // Для физического стекла с transmission opacity должна быть 1.0
       metalness: 0,
-      roughness: 0.02,
-      ior: 1.52,          
-      thickness: 0.5,     
-      clearcoat: 1.0,
+      roughness: 0.02,    // Практически гладкое
+      ior: 1.52,          // Индекс преломления оптической линзы
+      thickness: 0.6,     // Толщина для искажения фона (эффект преломления)
+      clearcoat: 1.0,     // Идеальный глянцевый блик
       clearcoatRoughness: 0.02,
+      attenuationColor: new THREE.Color(0x5caeff), // Объемный цвет (края выглядят насыщеннее)
+      attenuationDistance: 2.0, // Глубина проникновения света
       side: THREE.DoubleSide,
       transparent: true,
       depthWrite: false
