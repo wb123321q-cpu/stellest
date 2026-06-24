@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Stellest 3D Lens - Premium</title>
 
   <script type="importmap">
@@ -15,12 +16,13 @@
   </script>
 
   <style>
-    html, body {
+    html,
+    body {
       margin: 0;
       width: 100%;
       height: 100%;
       background: #020812;
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: Arial, sans-serif;
       overflow: hidden;
     }
 
@@ -30,7 +32,7 @@
       height: 100vh;
       overflow: hidden;
       background:
-        radial-gradient(circle at 50% 45%, rgba(40, 140, 255, 0.15) 0%, rgba(7, 24, 39, 0.8) 50%, rgba(2, 8, 18, 1) 100%),
+        radial-gradient(circle at 50% 42%, rgba(55, 165, 255, 0.22) 0%, rgba(7, 24, 39, 0.82) 48%, rgba(2, 8, 18, 1) 100%),
         linear-gradient(135deg, #04101c 0%, #010408 100%);
     }
 
@@ -38,13 +40,40 @@
       content: "";
       position: absolute;
       left: -10%;
-      top: 50%;
+      top: 51%;
       width: 120%;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(137, 207, 255, 0.4), transparent);
-      box-shadow: 0 0 20px rgba(72, 175, 255, 0.3);
+      background: linear-gradient(90deg, transparent, rgba(137, 207, 255, 0.45), transparent);
+      box-shadow: 0 0 22px rgba(72, 175, 255, 0.34);
       z-index: 1;
       pointer-events: none;
+    }
+
+    .stellest-brand {
+      position: absolute;
+      top: 30px;
+      left: 34px;
+      z-index: 6;
+      color: #eaf7ff;
+      pointer-events: none;
+      text-shadow: 0 0 28px rgba(93, 190, 255, 0.22);
+    }
+
+    .stellest-brand__eyebrow {
+      margin-bottom: 3px;
+      font-size: 13px;
+      line-height: 1;
+      letter-spacing: 5px;
+      font-weight: 700;
+      opacity: 0.86;
+    }
+
+    .stellest-brand__title {
+      font-size: clamp(34px, 7vw, 58px);
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+      font-weight: 300;
+      color: #dff4ff;
     }
 
     #stellestCanvas {
@@ -55,105 +84,133 @@
       z-index: 2;
     }
 
-    /* GLASSMORPHISM POPUP */
     .micro-popup {
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(140px, -130px) scale(0.95);
       width: 320px;
-      padding: 28px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 26px 28px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 24px;
-      background: rgba(10, 25, 45, 0.45);
+      background: rgba(10, 25, 45, 0.48);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      box-shadow: 
-        0 16px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      box-shadow:
+        0 16px 42px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.20);
       color: #fff;
       opacity: 0;
       pointer-events: none;
       z-index: 5;
-      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translate(118px, -110px) scale(0.95);
+      transition:
+        opacity 0.36s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.36s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .micro-popup.active {
       opacity: 1;
-      transform: translate(160px, -130px) scale(1);
+      transform: translate(138px, -110px) scale(1);
     }
 
     .popup-num {
+      margin-bottom: 8px;
       font-size: 52px;
       line-height: 1;
       font-weight: 300;
       background: linear-gradient(135deg, #ffffff 0%, #8bcfff 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 8px;
     }
 
     .popup-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #bde4ff;
       margin-bottom: 12px;
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 650;
+      color: #bde4ff;
       text-transform: uppercase;
       letter-spacing: 1.5px;
     }
 
     .popup-text {
+      margin: 0;
       font-size: 15px;
       line-height: 1.6;
-      color: rgba(255, 255, 255, 0.75);
-      margin-bottom: 0; 
+      color: rgba(255, 255, 255, 0.76);
     }
 
     .popup-line {
       position: absolute;
       left: 50%;
       top: 50%;
-      width: 190px;
+      width: 160px;
       height: 1px;
-      transform: translate(-10px, -10px);
-      background: linear-gradient(90deg, rgba(137, 207, 255, 0.8), transparent);
+      transform: translate(-18px, -4px);
+      background: linear-gradient(90deg, rgba(137, 207, 255, 0.9), transparent);
+      box-shadow: 0 0 18px rgba(72, 175, 255, 0.44);
       opacity: 0;
       pointer-events: none;
       z-index: 4;
       transition: opacity 0.3s ease;
     }
 
-    .popup-line.active { opacity: 1; }
+    .popup-line.active {
+      opacity: 1;
+    }
 
     @media (max-width: 900px) {
+      .stellest-brand {
+        top: 22px;
+        left: 24px;
+      }
+
+      .stellest-brand__eyebrow {
+        font-size: 11px;
+        letter-spacing: 4px;
+      }
+
+      .stellest-brand__title {
+        font-size: 38px;
+      }
+
       .micro-popup {
         left: 20px;
         right: 20px;
         top: auto;
-        bottom: 40px;
+        bottom: 32px;
         width: calc(100% - 40px);
         box-sizing: border-box;
-        transform: translateY(20px) scale(0.95);
+        transform: translateY(18px) scale(0.96);
       }
+
       .micro-popup.active {
         transform: translateY(0) scale(1);
       }
-      .popup-line { display: none; }
+
+      .popup-line {
+        display: none;
+      }
     }
   </style>
 </head>
 
 <body>
   <section class="stellest-hero">
+    <div class="stellest-brand">
+      <div class="stellest-brand__eyebrow">ESSILOR</div>
+      <div class="stellest-brand__title">Stellest</div>
+    </div>
+
     <div id="stellestCanvas"></div>
     <div class="popup-line" id="popupLine"></div>
 
     <div class="micro-popup" id="microPopup">
       <div class="popup-num">1021</div>
       <div class="popup-title">микролинза</div>
-      <div class="popup-text">
-        Микроструктура формирует объемную зону дефокуса, эффективно замедляя прогрессирование близорукости у детей.
-      </div>
+      <p class="popup-text">
+        Микроструктура формирует объёмную зону дефокуса, эффективно замедляя прогрессирование близорукости у детей.
+      </p>
     </div>
   </section>
 
@@ -165,87 +222,114 @@
     const container = document.getElementById("stellestCanvas");
     const popup = document.getElementById("microPopup");
     const popupLine = document.getElementById("popupLine");
+
     const MODEL_FILE = "./Stellest%202.0.glb";
 
     const scene = new THREE.Scene();
 
-    const camera = new THREE.PerspectiveCamera(28, container.clientWidth / container.clientHeight, 0.1, 100);
-    camera.position.set(0, 0, 5.8);
+    const camera = new THREE.PerspectiveCamera(
+      27,
+      container.clientWidth / container.clientHeight,
+      0.1,
+      100
+    );
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    /*
+      Было далеко:
+      camera.position.set(0, 0, 5.8);
+
+      Стало ближе:
+      камера чуть ближе + модель крупнее ниже по коду.
+    */
+    camera.position.set(0, 0, 4.55);
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true
+    });
+
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setClearColor(0x000000, 0);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.15;
+
     container.appendChild(renderer.domElement);
 
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.8);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.9);
     scene.add(ambient);
 
-    const keyLight = new THREE.DirectionalLight(0xd7f4ff, 2.5);
+    const keyLight = new THREE.DirectionalLight(0xd7f4ff, 2.7);
     keyLight.position.set(-3, 3, 4);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x62c9ff, 3.0);
+    const rimLight = new THREE.DirectionalLight(0x62c9ff, 3.2);
     rimLight.position.set(3, -2, -2);
     scene.add(rimLight);
+
+    const frontLight = new THREE.PointLight(0x8cdbff, 2.4, 8);
+    frontLight.position.set(0, 0.8, 2.8);
+    scene.add(frontLight);
 
     let mixer = null;
     let modelRoot = null;
     let introFinished = false;
     let isHoveringMicro = false;
-    let hoverProgress = 0; 
+    let hoverProgress = 0;
     let idleAngle = 0;
 
     const microMeshes = [];
     const edgeMeshes = [];
+
     const clock = new THREE.Clock();
-    
+
     const mouse = new THREE.Vector2(0, 0);
     const targetRotation = new THREE.Vector2(0, 0);
 
-    // Новые настройки цветов для выразительности
-    const colorMicroBase = new THREE.Color(0x8bcfff); // Более светлый базовый цвет
-    const colorMicroHover = new THREE.Color(0xffffff); // Уход в чистый белый при наведении
-    const emissiveBase = new THREE.Color(0x1890ff); // Базовое синее свечение изнутри
-    const emissiveHover = new THREE.Color(0x62c9ff); // Яркое голубое свечение при наведении
+    const colorMicroBase = new THREE.Color(0xb7ecff);
+    const colorMicroHover = new THREE.Color(0xffffff);
 
-    // Обновленный материал колец
+    const emissiveBase = new THREE.Color(0x229cff);
+    const emissiveHover = new THREE.Color(0x8be7ff);
+
     const microMaterial = new THREE.MeshPhysicalMaterial({
       color: colorMicroBase,
-      emissive: emissiveBase,       // Излучение света
-      emissiveIntensity: 0.5,       // Интенсивность изначального свечения
+      emissive: emissiveBase,
+      emissiveIntensity: 0.62,
       transparent: true,
-      opacity: 0.85,                // Кольца изначально более плотные и видимые
-      roughness: 0.1,
-      transmission: 0.2,            // Снижено светопропускание (выделяет кольца на фоне линзы)
+      opacity: 0.95,
+      roughness: 0.08,
+      transmission: 0.08,
       side: THREE.DoubleSide,
+      depthTest: false,
       depthWrite: false
     });
 
     const edgeMaterial = new THREE.MeshBasicMaterial({
       color: new THREE.Color(0x8bcfff),
       transparent: true,
-      opacity: 0.9,
+      opacity: 0.95,
       side: THREE.DoubleSide,
+      depthTest: false,
       depthWrite: false
     });
 
     const lensMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x7fcfff), 
-      transmission: 0.95, 
-      opacity: 1.0,       
+      color: new THREE.Color(0x70cfff),
+      transmission: 0.88,
+      opacity: 0.74,
       metalness: 0,
-      roughness: 0.02,    
-      ior: 1.52,          
-      thickness: 0.6,     
-      clearcoat: 1.0,     
-      clearcoatRoughness: 0.02,
-      attenuationColor: new THREE.Color(0x5caeff), 
-      attenuationDistance: 2.0, 
+      roughness: 0.018,
+      ior: 1.52,
+      thickness: 0.55,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.018,
+      attenuationColor: new THREE.Color(0x5caeff),
+      attenuationDistance: 2.0,
       side: THREE.DoubleSide,
       transparent: true,
       depthWrite: false
@@ -255,75 +339,122 @@
 
     loader.load(
       MODEL_FILE,
-      (gltf) => {
-        modelRoot = gltf.scene;
 
-        modelRoot.traverse((obj) => {
+      (gltf) => {
+        const originalScene = gltf.scene;
+        let modelInner = originalScene;
+
+        modelInner.traverse((obj) => {
           const name = (obj.name || "").toLowerCase();
 
-          if (name.includes("background") || name.includes("floor") || name.includes("strip") || name.includes("light") || name.includes("camera")) {
+          if (
+            name.includes("background") ||
+            name.includes("floor") ||
+            name.includes("strip") ||
+            name.includes("light") ||
+            name.includes("camera")
+          ) {
             obj.visible = false;
           }
 
           if (!obj.isMesh) return;
+
           obj.frustumCulled = false;
 
           if (name.includes("micro")) {
             obj.material = microMaterial;
             obj.renderOrder = 30;
             microMeshes.push(obj);
-          } else if (name.includes("edge") || name.includes("glow")) {
+          }
+
+          else if (name.includes("edge") || name.includes("glow")) {
             obj.material = edgeMaterial;
             obj.renderOrder = 20;
             edgeMeshes.push(obj);
-          } else if (name.includes("lens") || name.includes("glass")) {
+          }
+
+          else if (name.includes("lens") || name.includes("glass")) {
             obj.material = lensMaterial;
             obj.renderOrder = 5;
           }
         });
 
-        const box = new THREE.Box3().setFromObject(modelRoot);
+        const box = new THREE.Box3().setFromObject(modelInner);
         const center = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3());
 
-        modelRoot.position.sub(center);
-        
+        modelInner.position.sub(center);
+
         const pivot = new THREE.Group();
         scene.add(pivot);
-        pivot.add(modelRoot);
+        pivot.add(modelInner);
+
         modelRoot = pivot;
 
         const maxSize = Math.max(size.x, size.y, size.z);
-        modelRoot.scale.setScalar(2.6 / maxSize);
+
+        /*
+          Было:
+          modelRoot.scale.setScalar(2.6 / maxSize);
+
+          Стало крупнее:
+          3.35 / maxSize.
+        */
+        modelRoot.scale.setScalar(3.35 / maxSize);
+
+        /*
+          Слегка опускаем линзу вниз, чтобы сверху спокойно стоял текст.
+        */
+        modelRoot.position.y = -0.12;
 
         if (gltf.animations.length > 0) {
-          mixer = new THREE.AnimationMixer(gltf.scene);
+          mixer = new THREE.AnimationMixer(originalScene);
+
           gltf.animations.forEach((clip) => {
             const action = mixer.clipAction(clip);
+            action.reset();
             action.setLoop(THREE.LoopOnce, 1);
             action.clampWhenFinished = true;
             action.play();
           });
-          setTimeout(() => introFinished = true, 4600);
+
+          setTimeout(() => {
+            introFinished = true;
+          }, 4600);
         } else {
           introFinished = true;
         }
       },
+
       undefined,
-      (error) => console.error("Ошибка загрузки GLB:", error)
+
+      (error) => {
+        console.error("Ошибка загрузки GLB:", error);
+      }
     );
 
     function checkPointer(event) {
       const rect = container.getBoundingClientRect();
+
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
 
       mouse.x = (x / rect.width) * 2 - 1;
       mouse.y = -(y / rect.height) * 2 + 1;
 
-      const distance = Math.sqrt(Math.pow(x - rect.width * 0.5, 2) + Math.pow(y - rect.height * 0.5, 2));
+      const centerX = rect.width * 0.5;
+      const centerY = rect.height * 0.53;
+
+      const dx = x - centerX;
+      const dy = y - centerY;
+
+      const distance = Math.sqrt(dx * dx + dy * dy);
       const minSide = Math.min(rect.width, rect.height);
-      const isInside = distance > (minSide * 0.08) && distance < (minSide * 0.38);
+
+      /*
+        Зона наведения стала больше, потому что линза теперь крупнее.
+      */
+      const isInside = distance > minSide * 0.07 && distance < minSide * 0.42;
 
       if (isHoveringMicro !== isInside) {
         isHoveringMicro = isInside;
@@ -333,41 +464,49 @@
     }
 
     container.addEventListener("mousemove", checkPointer);
+
     container.addEventListener("mouseleave", () => {
       isHoveringMicro = false;
       mouse.set(0, 0);
       popup.classList.remove("active");
       popupLine.classList.remove("active");
     });
-    container.addEventListener("touchstart", (e) => e.touches[0] && checkPointer(e.touches[0]), { passive: true });
+
+    container.addEventListener("touchstart", (event) => {
+      if (event.touches && event.touches[0]) {
+        checkPointer(event.touches[0]);
+      }
+    }, { passive: true });
 
     function animate() {
       requestAnimationFrame(animate);
+
       const delta = Math.min(clock.getDelta(), 0.1);
 
-      if (mixer) mixer.update(delta);
+      if (mixer) {
+        mixer.update(delta);
+      }
 
       if (modelRoot && introFinished) {
         if (!isHoveringMicro) {
-          idleAngle += delta * 0.5;
+          idleAngle += delta * 0.48;
         }
 
-        targetRotation.x = mouse.y * 0.12;
-        targetRotation.y = mouse.x * 0.15 + (Math.sin(idleAngle) * 0.14);
+        targetRotation.x = mouse.y * 0.08;
+        targetRotation.y = mouse.x * 0.10 + Math.sin(idleAngle) * 0.12;
 
         modelRoot.rotation.x += (targetRotation.x - modelRoot.rotation.x) * delta * 4;
         modelRoot.rotation.y += (targetRotation.y - modelRoot.rotation.y) * delta * 4;
 
-        // Плавная анимация новых параметров при наведении
         const targetHoverVal = isHoveringMicro ? 1 : 0;
         hoverProgress += (targetHoverVal - hoverProgress) * delta * 6;
 
-        microMaterial.opacity = 0.85 + (hoverProgress * 0.15); // Небольшой прирост видимости
-        microMaterial.emissiveIntensity = 0.5 + (hoverProgress * 0.5); // Усиливаем свечение
+        microMaterial.opacity = 0.95 + hoverProgress * 0.05;
+        microMaterial.emissiveIntensity = 0.62 + hoverProgress * 0.62;
         microMaterial.color.lerpColors(colorMicroBase, colorMicroHover, hoverProgress);
         microMaterial.emissive.lerpColors(emissiveBase, emissiveHover, hoverProgress);
-        
-        edgeMaterial.opacity = 0.9 + (hoverProgress * 0.1);
+
+        edgeMaterial.opacity = 0.95 + hoverProgress * 0.05;
       }
 
       renderer.render(scene, camera);
