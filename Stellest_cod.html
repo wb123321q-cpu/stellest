@@ -203,6 +203,7 @@
     </div>
 
     <div id="stellestCanvas"></div>
+
     <div class="popup-line" id="popupLine"></div>
 
     <div class="micro-popup" id="microPopup">
@@ -218,6 +219,9 @@
     import * as THREE from "three";
     import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
     import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+    import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+    import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+    import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 
     const container = document.getElementById("stellestCanvas");
     const popup = document.getElementById("microPopup");
@@ -234,13 +238,6 @@
       100
     );
 
-    /*
-      Было далеко:
-      camera.position.set(0, 0, 5.8);
-
-      Стало ближе:
-      камера чуть ближе + модель крупнее ниже по коду.
-    */
     camera.position.set(0, 0, 4.55);
 
     const renderer = new THREE.WebGLRenderer({
@@ -253,14 +250,28 @@
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.18;
 
     container.appendChild(renderer.domElement);
+
+    const composer = new EffectComposer(renderer);
+
+    const renderPass = new RenderPass(scene, camera);
+    composer.addPass(renderPass);
+
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(container.clientWidth, container.clientHeight),
+      0.34,
+      0.62,
+      0.14
+    );
+
+    composer.addPass(bloomPass);
 
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.9);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.92);
     scene.add(ambient);
 
     const keyLight = new THREE.DirectionalLight(0xd7f4ff, 2.7);
@@ -271,7 +282,7 @@
     rimLight.position.set(3, -2, -2);
     scene.add(rimLight);
 
-    const frontLight = new THREE.PointLight(0x8cdbff, 2.4, 8);
+    const frontLight = new THREE.PointLight(0x8cdbff, 2.6, 8);
     frontLight.position.set(0, 0.8, 2.8);
     scene.add(frontLight);
 
@@ -293,17 +304,17 @@
     const colorMicroBase = new THREE.Color(0xb7ecff);
     const colorMicroHover = new THREE.Color(0xffffff);
 
-    const emissiveBase = new THREE.Color(0x229cff);
-    const emissiveHover = new THREE.Color(0x8be7ff);
+    const emissiveBase = new THREE.Color(0x2daaff);
+    const emissiveHover = new THREE.Color(0xd8fbff);
 
     const microMaterial = new THREE.MeshPhysicalMaterial({
       color: colorMicroBase,
       emissive: emissiveBase,
-      emissiveIntensity: 0.62,
+      emissiveIntensity: 1.05,
       transparent: true,
-      opacity: 0.95,
-      roughness: 0.08,
-      transmission: 0.08,
+      opacity: 1.0,
+      roughness: 0.04,
+      transmission: 0.02,
       side: THREE.DoubleSide,
       depthTest: false,
       depthWrite: false
@@ -312,7 +323,7 @@
     const edgeMaterial = new THREE.MeshBasicMaterial({
       color: new THREE.Color(0x8bcfff),
       transparent: true,
-      opacity: 0.95,
+      opacity: 0.96,
       side: THREE.DoubleSide,
       depthTest: false,
       depthWrite: false
@@ -393,18 +404,7 @@
 
         const maxSize = Math.max(size.x, size.y, size.z);
 
-        /*
-          Было:
-          modelRoot.scale.setScalar(2.6 / maxSize);
-
-          Стало крупнее:
-          3.35 / maxSize.
-        */
         modelRoot.scale.setScalar(3.35 / maxSize);
-
-        /*
-          Слегка опускаем линзу вниз, чтобы сверху спокойно стоял текст.
-        */
         modelRoot.position.y = -0.12;
 
         if (gltf.animations.length > 0) {
@@ -451,9 +451,6 @@
       const distance = Math.sqrt(dx * dx + dy * dy);
       const minSide = Math.min(rect.width, rect.height);
 
-      /*
-        Зона наведения стала больше, потому что линза теперь крупнее.
-      */
       const isInside = distance > minSide * 0.07 && distance < minSide * 0.42;
 
       if (isHoveringMicro !== isInside) {
@@ -501,15 +498,19 @@
         const targetHoverVal = isHoveringMicro ? 1 : 0;
         hoverProgress += (targetHoverVal - hoverProgress) * delta * 6;
 
-        microMaterial.opacity = 0.95 + hoverProgress * 0.05;
-        microMaterial.emissiveIntensity = 0.62 + hoverProgress * 0.62;
+        microMaterial.opacity = 1.0;
+        microMaterial.emissiveIntensity = 1.05 + hoverProgress * 3.2;
         microMaterial.color.lerpColors(colorMicroBase, colorMicroHover, hoverProgress);
         microMaterial.emissive.lerpColors(emissiveBase, emissiveHover, hoverProgress);
 
-        edgeMaterial.opacity = 0.95 + hoverProgress * 0.05;
+        edgeMaterial.opacity = 0.96 + hoverProgress * 0.04;
+
+        bloomPass.strength = 0.34 + hoverProgress * 1.75;
+        bloomPass.radius = 0.62 + hoverProgress * 0.28;
+        bloomPass.threshold = 0.14 - hoverProgress * 0.06;
       }
 
-      renderer.render(scene, camera);
+      composer.render();
     }
 
     animate();
@@ -517,7 +518,9 @@
     window.addEventListener("resize", () => {
       camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();
+
       renderer.setSize(container.clientWidth, container.clientHeight);
+      composer.setSize(container.clientWidth, container.clientHeight);
     });
   </script>
 </body>
