@@ -6,15 +6,24 @@
 
   <title>Stellest 3D Lens</title>
 
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
   <style>
     html,
     body {
       margin: 0;
       width: 100%;
-      min-height: 100%;
+      height: 100%;
       background: #020812;
       font-family: Arial, sans-serif;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
     .stellest-hero {
@@ -23,8 +32,8 @@
       height: 100vh;
       overflow: hidden;
       background:
-        radial-gradient(circle at 28% 45%, rgba(60, 165, 255, 0.28) 0%, rgba(7, 24, 39, 0.72) 38%, rgba(2, 8, 18, 1) 78%),
-        linear-gradient(135deg, #05111f 0%, #020812 100%);
+        radial-gradient(circle at 30% 48%, rgba(70, 170, 255, 0.28) 0%, rgba(7, 24, 39, 0.75) 38%, rgba(2, 8, 18, 1) 78%),
+        linear-gradient(135deg, #061827 0%, #020812 100%);
     }
 
     .stellest-hero::before {
@@ -45,7 +54,7 @@
       position: absolute;
       left: 0;
       top: 0;
-      width: 62%;
+      width: 64%;
       height: 100%;
       z-index: 2;
     }
@@ -144,17 +153,21 @@
     .status {
       margin-top: 14px;
       font-size: 13px;
-      color: rgba(234, 247, 255, 0.48);
+      color: rgba(234, 247, 255, 0.5);
     }
 
     @media (max-width: 900px) {
+      body {
+        overflow-y: auto;
+      }
+
       .stellest-hero {
         height: 900px;
       }
 
       #stellestCanvas {
         width: 100%;
-        height: 58%;
+        height: 56%;
       }
 
       .content-card {
@@ -220,8 +233,8 @@
   </section>
 
   <script type="module">
-    import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
-    import { GLTFLoader } from "https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js";
+    import * as THREE from "three";
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
     const container = document.getElementById("stellestCanvas");
     const statusText = document.getElementById("statusText");
@@ -235,7 +248,7 @@
       100
     );
 
-    camera.position.set(0, -5.4, 0.15);
+    camera.position.set(0, -5.2, 0.15);
     camera.up.set(0, 0, 1);
     camera.lookAt(0, 0, 0);
 
@@ -246,27 +259,28 @@
 
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.setClearColor(0x000000, 0);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     container.appendChild(renderer.domElement);
 
-    const ambient = new THREE.AmbientLight(0x9fdcff, 1.25);
+    const ambient = new THREE.AmbientLight(0x9fdcff, 1.35);
     scene.add(ambient);
 
-    const keyLight = new THREE.DirectionalLight(0x9fdcff, 2.2);
-    keyLight.position.set(-2.5, -4, 3);
+    const keyLight = new THREE.DirectionalLight(0xb8e9ff, 2.5);
+    keyLight.position.set(-3, -4, 3);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x4ab8ff, 1.6);
+    const rimLight = new THREE.DirectionalLight(0x4ab8ff, 1.8);
     rimLight.position.set(3, -2, 1);
     scene.add(rimLight);
 
-    const frontLight = new THREE.PointLight(0x6dc8ff, 2.2, 8);
-    frontLight.position.set(0, -2.4, 0.4);
+    const frontLight = new THREE.PointLight(0x6dc8ff, 2.8, 8);
+    frontLight.position.set(0, -2.2, 0.4);
     scene.add(frontLight);
 
     let mixer = null;
+    let modelRoot = null;
     const clock = new THREE.Clock();
 
     const loader = new GLTFLoader();
@@ -275,13 +289,16 @@
       "./Stellest%202.0.glb",
 
       function (gltf) {
-        const model = gltf.scene;
+        modelRoot = gltf.scene;
 
-        model.traverse((obj) => {
+        modelRoot.traverse((obj) => {
+          const name = (obj.name || "").toLowerCase();
+
           if (
-            obj.name === "Premium_Dark_Background" ||
-            obj.name === "Subtle_Reflection_Floor" ||
-            obj.name === "Blue_Light_Strip_Behind_Lens"
+            name.includes("background") ||
+            name.includes("floor") ||
+            name.includes("strip") ||
+            name.includes("light")
           ) {
             obj.visible = false;
           }
@@ -293,48 +310,50 @@
               obj.material.transparent = true;
               obj.material.depthWrite = false;
               obj.material.side = THREE.DoubleSide;
+
+              if (obj.material.color) {
+                obj.material.color.convertSRGBToLinear();
+              }
             }
           }
         });
 
-        const box = new THREE.Box3().setFromObject(model);
+        const box = new THREE.Box3().setFromObject(modelRoot);
         const center = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3());
 
-        model.position.sub(center);
+        modelRoot.position.x -= center.x;
+        modelRoot.position.y -= center.y;
+        modelRoot.position.z -= center.z;
 
         const maxSize = Math.max(size.x, size.y, size.z);
-        const scale = 2.7 / maxSize;
-        model.scale.setScalar(scale);
+        const scale = 2.85 / maxSize;
+        modelRoot.scale.setScalar(scale);
 
-        model.position.x = -0.75;
-        model.position.z = 0.02;
+        modelRoot.position.x = -0.65;
+        modelRoot.position.y = 0;
+        modelRoot.position.z = 0;
 
-        scene.add(model);
+        scene.add(modelRoot);
 
-        mixer = new THREE.AnimationMixer(model);
-
-        console.log("Анимации GLB:", gltf.animations.map(a => a.name));
-
-        gltf.animations.forEach((clip) => {
-          const action = mixer.clipAction(clip);
-          action.reset();
-
-          if (clip.name.toLowerCase().includes("root")) {
-            action.setLoop(THREE.LoopRepeat, Infinity);
-            action.clampWhenFinished = false;
-          } else {
-            action.setLoop(THREE.LoopOnce, 1);
-            action.clampWhenFinished = true;
-          }
-
-          action.play();
-        });
+        console.log("GLB загружен");
+        console.log("Найдено анимаций:", gltf.animations.length);
+        console.log("Названия анимаций:", gltf.animations.map(a => a.name));
 
         if (gltf.animations.length > 0) {
+          mixer = new THREE.AnimationMixer(modelRoot);
+
+          gltf.animations.forEach((clip) => {
+            const action = mixer.clipAction(clip);
+            action.reset();
+            action.setLoop(THREE.LoopRepeat, Infinity);
+            action.clampWhenFinished = false;
+            action.play();
+          });
+
           statusText.textContent = "3D-анимация запущена";
         } else {
-          statusText.textContent = "GLB загрузился, но анимаций внутри нет";
+          statusText.textContent = "GLB загрузился, но внутри нет анимаций";
         }
       },
 
@@ -346,8 +365,8 @@
       },
 
       function (error) {
-        console.error(error);
-        statusText.textContent = "Ошибка загрузки GLB";
+        console.error("Ошибка загрузки GLB:", error);
+        statusText.textContent = "Ошибка загрузки GLB. Проверь название файла.";
       }
     );
 
@@ -368,7 +387,6 @@
     window.addEventListener("resize", () => {
       camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();
-
       renderer.setSize(container.clientWidth, container.clientHeight);
     });
   </script>
