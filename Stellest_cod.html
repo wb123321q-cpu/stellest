@@ -32,7 +32,7 @@
       height: 100vh;
       overflow: hidden;
       background:
-        radial-gradient(circle at 30% 48%, rgba(70, 170, 255, 0.26) 0%, rgba(7, 24, 39, 0.72) 38%, rgba(2, 8, 18, 1) 78%),
+        radial-gradient(circle at 50% 45%, rgba(70, 170, 255, 0.24) 0%, rgba(7, 24, 39, 0.72) 42%, rgba(2, 8, 18, 1) 82%),
         linear-gradient(135deg, #061827 0%, #020812 100%);
     }
 
@@ -43,164 +43,132 @@
       top: 50%;
       width: 120%;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(125, 205, 255, 0.72), transparent);
-      box-shadow: 0 0 28px rgba(72, 175, 255, 0.55);
+      background: linear-gradient(90deg, transparent, rgba(125, 205, 255, 0.68), transparent);
+      box-shadow: 0 0 28px rgba(72, 175, 255, 0.5);
       opacity: 0.55;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .stellest-hero::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 520px;
+      height: 520px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(74, 184, 255, 0.16) 0%, rgba(74, 184, 255, 0.04) 38%, transparent 70%);
+      filter: blur(12px);
       z-index: 1;
       pointer-events: none;
     }
 
     #stellestCanvas {
       position: absolute;
-      left: 0;
-      top: 0;
-      width: 64%;
+      inset: 0;
+      width: 100%;
       height: 100%;
       z-index: 2;
+      cursor: default;
     }
 
-    .content-card {
+    .micro-popup {
       position: absolute;
-      right: 5%;
+      left: 50%;
       top: 50%;
-      transform: translateY(-50%);
-      width: 390px;
-      z-index: 3;
-      color: #eaf7ff;
-    }
-
-    .brand {
-      font-size: 15px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: rgba(234, 247, 255, 0.85);
-      margin-bottom: 10px;
-    }
-
-    .title {
-      font-size: 66px;
-      line-height: 0.95;
-      font-weight: 300;
-      letter-spacing: -2px;
-      color: #dff4ff;
-      text-shadow: 0 0 28px rgba(102, 194, 255, 0.22);
-      margin-bottom: 18px;
-    }
-
-    .subtitle {
-      font-size: 17px;
-      line-height: 1.45;
-      text-transform: uppercase;
-      color: rgba(234, 247, 255, 0.82);
-      margin-bottom: 30px;
-    }
-
-    .info-box {
-      padding: 24px 28px;
-      border: 1px solid rgba(137, 207, 255, 0.45);
+      transform: translate(130px, -120px);
+      width: 340px;
+      padding: 22px 24px;
+      border: 1px solid rgba(137, 207, 255, 0.55);
       border-radius: 22px;
-      background: rgba(4, 20, 36, 0.58);
+      background: rgba(4, 20, 36, 0.68);
       backdrop-filter: blur(14px);
       box-shadow:
-        0 0 60px rgba(56, 164, 255, 0.16),
-        inset 0 0 30px rgba(100, 190, 255, 0.06);
+        0 0 60px rgba(56, 164, 255, 0.22),
+        inset 0 0 30px rgba(100, 190, 255, 0.08);
+      color: #eaf7ff;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 5;
+      transition: opacity 0.22s ease, transform 0.22s ease;
     }
 
-    .num {
-      font-size: 52px;
+    .micro-popup.active {
+      opacity: 1;
+      transform: translate(150px, -120px);
+    }
+
+    .popup-num {
+      font-size: 46px;
       line-height: 1;
       font-weight: 700;
       color: #8bcfff;
       margin-bottom: 4px;
     }
 
-    .label {
-      font-size: 24px;
+    .popup-title {
+      font-size: 22px;
       line-height: 1.2;
       color: #8bcfff;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .text {
+    .popup-text {
       font-size: 16px;
-      line-height: 1.55;
+      line-height: 1.5;
       color: rgba(234, 247, 255, 0.88);
     }
 
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 30px;
-      padding: 15px 28px;
-      border: 1px solid rgba(137, 207, 255, 0.6);
-      border-radius: 999px;
-      color: #dff4ff;
-      text-decoration: none;
-      font-size: 15px;
-      letter-spacing: 1px;
-      background: rgba(9, 38, 65, 0.42);
-      box-shadow: 0 0 26px rgba(56, 164, 255, 0.12);
-      transition: 0.25s ease;
+    .popup-line {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 190px;
+      height: 1px;
+      transform: translate(-10px, -10px);
+      background: linear-gradient(90deg, rgba(137, 207, 255, 0.85), transparent);
+      box-shadow: 0 0 18px rgba(72, 175, 255, 0.45);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 4;
+      transition: opacity 0.22s ease;
     }
 
-    .button:hover {
-      background: rgba(28, 110, 175, 0.32);
-      box-shadow: 0 0 34px rgba(56, 164, 255, 0.28);
-    }
-
-    .status {
-      margin-top: 14px;
-      font-size: 13px;
-      color: rgba(234, 247, 255, 0.5);
+    .popup-line.active {
+      opacity: 1;
     }
 
     @media (max-width: 900px) {
-      body {
-        overflow-y: auto;
-      }
-
-      .stellest-hero {
-        height: 900px;
-      }
-
-      #stellestCanvas {
-        width: 100%;
-        height: 56%;
-      }
-
-      .content-card {
+      .micro-popup {
         left: 20px;
         right: 20px;
         top: auto;
-        bottom: 34px;
-        transform: none;
+        bottom: 28px;
         width: auto;
+        transform: translateY(18px);
       }
 
-      .title {
-        font-size: 48px;
+      .micro-popup.active {
+        transform: translateY(0);
       }
 
-      .subtitle {
-        font-size: 15px;
-        margin-bottom: 20px;
+      .popup-line {
+        display: none;
       }
 
-      .info-box {
-        padding: 22px;
+      .popup-num {
+        font-size: 38px;
       }
 
-      .num {
-        font-size: 40px;
+      .popup-title {
+        font-size: 19px;
       }
 
-      .label {
-        font-size: 20px;
-      }
-
-      .text {
+      .popup-text {
         font-size: 15px;
       }
     }
@@ -211,24 +179,14 @@
   <section class="stellest-hero">
     <div id="stellestCanvas"></div>
 
-    <div class="content-card">
-      <div class="brand">ESSILOR</div>
-      <div class="title">Stellest</div>
-      <div class="subtitle">Линзы для контроля миопии у детей</div>
+    <div class="popup-line" id="popupLine"></div>
 
-      <div class="info-box">
-        <div class="num">1021</div>
-        <div class="label">микролинза</div>
-        <div class="text">
-          Создают зону миопического дефокуса, которая помогает замедлять прогрессирование близорукости у детей.
-        </div>
+    <div class="micro-popup" id="microPopup">
+      <div class="popup-num">1021</div>
+      <div class="popup-title">микролинза</div>
+      <div class="popup-text">
+        Микролинзы формируют зону миопического дефокуса и помогают замедлять прогрессирование близорукости у детей.
       </div>
-
-      <a class="button" href="https://miroptikilubertsy.ru/stellest_linzy_kontrol_miopii_u_detei">
-        Узнать подробнее →
-      </a>
-
-      <div class="status" id="statusText">Загрузка 3D-анимации...</div>
     </div>
   </section>
 
@@ -237,7 +195,10 @@
     import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
     const container = document.getElementById("stellestCanvas");
-    const statusText = document.getElementById("statusText");
+    const popup = document.getElementById("microPopup");
+    const popupLine = document.getElementById("popupLine");
+
+    const MODEL_FILE = "./Stellest%202.0.glb";
 
     const scene = new THREE.Scene();
 
@@ -282,12 +243,58 @@
     let mixer = null;
     let modelRoot = null;
     let introFinished = false;
+    let isHoveringMicro = false;
+    let idleAngle = 0;
 
+    const microMeshes = [];
+    const edgeMeshes = [];
     const clock = new THREE.Clock();
+    const pointer = new THREE.Vector2();
+
+    const normalMicroMaterial = new THREE.MeshBasicMaterial({
+      color: new THREE.Color(0x6fc8ff),
+      transparent: true,
+      opacity: 0.82,
+      side: THREE.DoubleSide,
+      depthTest: false,
+      depthWrite: false
+    });
+
+    const hoverMicroMaterial = new THREE.MeshBasicMaterial({
+      color: new THREE.Color(0xd3f6ff),
+      transparent: true,
+      opacity: 1.0,
+      side: THREE.DoubleSide,
+      depthTest: false,
+      depthWrite: false
+    });
+
+    const lensMaterial = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0x7fcfff),
+      roughness: 0.04,
+      metalness: 0.0,
+      transmission: 0.18,
+      transparent: true,
+      opacity: 0.28,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.04
+    });
+
+    const edgeMaterial = new THREE.MeshBasicMaterial({
+      color: new THREE.Color(0x8bdfff),
+      transparent: true,
+      opacity: 0.95,
+      side: THREE.DoubleSide,
+      depthTest: false,
+      depthWrite: false
+    });
+
     const loader = new GLTFLoader();
 
     loader.load(
-      "./Stellest%202.0.glb",
+      MODEL_FILE,
 
       function (gltf) {
         modelRoot = gltf.scene;
@@ -310,45 +317,19 @@
           obj.frustumCulled = false;
 
           if (name.includes("micro")) {
-            obj.material = new THREE.MeshBasicMaterial({
-              color: new THREE.Color(0x8fdcff),
-              transparent: true,
-              opacity: 1.0,
-              side: THREE.DoubleSide,
-              depthTest: false,
-              depthWrite: false
-            });
-
-            obj.renderOrder = 20;
+            obj.material = normalMicroMaterial;
+            obj.renderOrder = 30;
+            microMeshes.push(obj);
           }
 
           else if (name.includes("edge") || name.includes("glow")) {
-            obj.material = new THREE.MeshBasicMaterial({
-              color: new THREE.Color(0x8bdfff),
-              transparent: true,
-              opacity: 0.95,
-              side: THREE.DoubleSide,
-              depthTest: false,
-              depthWrite: false
-            });
-
-            obj.renderOrder = 15;
+            obj.material = edgeMaterial;
+            obj.renderOrder = 20;
+            edgeMeshes.push(obj);
           }
 
           else if (name.includes("lens") || name.includes("glass")) {
-            obj.material = new THREE.MeshPhysicalMaterial({
-              color: new THREE.Color(0x7fcfff),
-              roughness: 0.04,
-              metalness: 0.0,
-              transmission: 0.18,
-              transparent: true,
-              opacity: 0.30,
-              side: THREE.DoubleSide,
-              depthWrite: false,
-              clearcoat: 1.0,
-              clearcoatRoughness: 0.04
-            });
-
+            obj.material = lensMaterial;
             obj.renderOrder = 5;
           }
         });
@@ -362,18 +343,14 @@
         modelRoot.position.z -= center.z;
 
         const maxSize = Math.max(size.x, size.y, size.z);
-        const scale = 2.35 / maxSize;
+        const scale = 2.45 / maxSize;
         modelRoot.scale.setScalar(scale);
 
-        modelRoot.position.x = -0.55;
+        modelRoot.position.x = 0;
         modelRoot.position.y = 0;
         modelRoot.position.z = 0;
 
         scene.add(modelRoot);
-
-        console.log("GLB загружен");
-        console.log("Найдено анимаций:", gltf.animations.length);
-        console.log("Названия анимаций:", gltf.animations.map(a => a.name));
 
         if (gltf.animations.length > 0) {
           mixer = new THREE.AnimationMixer(modelRoot);
@@ -390,26 +367,82 @@
           setTimeout(() => {
             introFinished = true;
           }, 4600);
-
-          statusText.textContent = "3D-анимация запущена";
         } else {
           introFinished = true;
-          statusText.textContent = "GLB загрузился, но внутри нет анимаций";
         }
       },
 
-      function (xhr) {
-        if (xhr.total) {
-          const percent = Math.round((xhr.loaded / xhr.total) * 100);
-          statusText.textContent = "Загрузка 3D: " + percent + "%";
-        }
-      },
+      undefined,
 
       function (error) {
         console.error("Ошибка загрузки GLB:", error);
-        statusText.textContent = "Ошибка загрузки GLB. Проверь название файла.";
       }
     );
+
+    function setMicroHoverState(active) {
+      if (isHoveringMicro === active) return;
+
+      isHoveringMicro = active;
+
+      microMeshes.forEach((mesh) => {
+        mesh.material = active ? hoverMicroMaterial : normalMicroMaterial;
+      });
+
+      edgeMeshes.forEach((mesh) => {
+        mesh.material.opacity = active ? 1.0 : 0.95;
+      });
+
+      popup.classList.toggle("active", active);
+      popupLine.classList.toggle("active", active);
+    }
+
+    function checkPointerOverMicro(event) {
+      const rect = container.getBoundingClientRect();
+
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      pointer.x = (x / rect.width) * 2 - 1;
+      pointer.y = -(y / rect.height) * 2 + 1;
+
+      /*
+        Стабильная зона наведения.
+        Мы не ловим каждую микролинзу отдельно, потому что они очень маленькие.
+        Наведение срабатывает по центральной зоне колец.
+      */
+      const centerX = rect.width * 0.5;
+      const centerY = rect.height * 0.5;
+
+      const dx = x - centerX;
+      const dy = y - centerY;
+
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const minSide = Math.min(rect.width, rect.height);
+
+      const innerRadius = minSide * 0.06;
+      const outerRadius = minSide * 0.34;
+
+      const isInsideMicroZone = distance > innerRadius && distance < outerRadius;
+
+      setMicroHoverState(isInsideMicroZone);
+    }
+
+    container.addEventListener("mousemove", checkPointerOverMicro);
+
+    container.addEventListener("mouseleave", () => {
+      setMicroHoverState(false);
+    });
+
+    container.addEventListener("touchstart", (event) => {
+      if (!event.touches || !event.touches[0]) return;
+
+      const touch = event.touches[0];
+
+      checkPointerOverMicro({
+        clientX: touch.clientX,
+        clientY: touch.clientY
+      });
+    }, { passive: true });
 
     function animate() {
       requestAnimationFrame(animate);
@@ -421,8 +454,11 @@
       }
 
       if (modelRoot && introFinished) {
-        const t = clock.elapsedTime;
-        modelRoot.rotation.y = Math.sin(t * 0.55) * 0.16;
+        if (!isHoveringMicro) {
+          idleAngle += delta * 0.55;
+        }
+
+        modelRoot.rotation.y = Math.sin(idleAngle) * 0.16;
       }
 
       renderer.render(scene, camera);
