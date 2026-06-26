@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Stellest 3D Lens - Premium</title>
+  <title>Stellest 3D Lens</title>
 
   <script type="importmap">
     {
@@ -21,9 +20,9 @@
       margin: 0;
       width: 100%;
       height: 100%;
-      background: #020812;
-      font-family: Arial, sans-serif;
       overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: #020812;
     }
 
     .stellest-hero {
@@ -54,11 +53,11 @@
       position: absolute;
       left: 50%;
       top: 50%;
-      width: 520px;
-      height: 520px;
+      width: 560px;
+      height: 560px;
       transform: translate(-50%, -50%);
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(120, 210, 255, 0.12), transparent 68%);
+      background: radial-gradient(circle, rgba(120, 210, 255, 0.12), transparent 70%);
       filter: blur(18px);
       z-index: 1;
       pointer-events: none;
@@ -69,7 +68,7 @@
       top: 22px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 8;
+      z-index: 10;
       text-align: center;
       pointer-events: none;
       color: #eaf7ff;
@@ -240,7 +239,7 @@
       <div class="popup-num">1021</div>
       <div class="popup-title">микролинза</div>
       <p class="popup-text">
-        Микроструктура формирует объёмную зону дефокуса, эффективно замедляя прогрессирование близорукости у детей.
+        Микроструктура формирует объёмную зону дефокуса и помогает замедлять прогрессирование близорукости у детей.
       </p>
     </div>
   </section>
@@ -268,7 +267,7 @@
       100
     );
 
-    camera.position.set(0, 0, 4.25);
+    camera.position.set(0, 0, 4.45);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -280,44 +279,42 @@
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.22;
+    renderer.toneMappingExposure = 1.08;
 
     container.appendChild(renderer.domElement);
 
     const composer = new EffectComposer(renderer);
-
     const renderPass = new RenderPass(scene, camera);
     composer.addPass(renderPass);
 
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(container.clientWidth, container.clientHeight),
-      0.34,
-      0.64,
-      0.13
+      0.24,
+      0.55,
+      0.18
     );
-
     composer.addPass(bloomPass);
 
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.95);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.82);
     scene.add(ambient);
 
-    const keyLight = new THREE.DirectionalLight(0xe7f8ff, 2.8);
+    const keyLight = new THREE.DirectionalLight(0xdff4ff, 2.2);
     keyLight.position.set(-3, 3, 4);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x62c9ff, 3.4);
+    const rimLight = new THREE.DirectionalLight(0x5dc2ff, 2.9);
     rimLight.position.set(3, -2, -2);
     scene.add(rimLight);
 
-    const frontLight = new THREE.PointLight(0xa8e8ff, 2.8, 8);
-    frontLight.position.set(0, 0.8, 2.8);
+    const frontLight = new THREE.PointLight(0xa8e8ff, 1.8, 8);
+    frontLight.position.set(0, 0.7, 2.8);
     scene.add(frontLight);
 
-    const glintLight = new THREE.PointLight(0xffffff, 0.0, 5);
-    glintLight.position.set(-1.6, 0.6, 2.1);
+    const glintLight = new THREE.PointLight(0xffffff, 0.0, 6);
+    glintLight.position.set(-1.35, 0.8, 2.2);
     scene.add(glintLight);
 
     let mixer = null;
@@ -331,23 +328,22 @@
     const edgeMeshes = [];
 
     const clock = new THREE.Clock();
-
     const mouse = new THREE.Vector2(0, 0);
     const targetRotation = new THREE.Vector2(0, 0);
 
-    const colorMicroBase = new THREE.Color(0xc7f2ff);
+    const colorMicroBase = new THREE.Color(0xbfefff);
     const colorMicroHover = new THREE.Color(0xffffff);
 
-    const emissiveBase = new THREE.Color(0x37b7ff);
-    const emissiveHover = new THREE.Color(0xe4fdff);
+    const emissiveBase = new THREE.Color(0x36b4ff);
+    const emissiveHover = new THREE.Color(0xe7fdff);
 
     const microMaterial = new THREE.MeshPhysicalMaterial({
       color: colorMicroBase,
       emissive: emissiveBase,
-      emissiveIntensity: 1.15,
+      emissiveIntensity: 0.95,
       transparent: true,
-      opacity: 1.0,
-      roughness: 0.035,
+      opacity: 0.98,
+      roughness: 0.05,
       transmission: 0.0,
       side: THREE.DoubleSide,
       depthTest: false,
@@ -355,30 +351,30 @@
     });
 
     const edgeMaterial = new THREE.MeshBasicMaterial({
-      color: new THREE.Color(0xb6eeff),
+      color: new THREE.Color(0x9adfff),
       transparent: true,
-      opacity: 0.92,
+      opacity: 0.85,
       side: THREE.DoubleSide,
       depthTest: false,
       depthWrite: false
     });
 
-    /*
-      Эффект ближе к Advanced Aesthetic:
-      стекло почти бесцветное, читается за счёт края, бликов и микроструктуры.
-    */
+    /* Главное изменение:
+       возвращаем красивый прошлый фон,
+       а линзу делаем прозрачной с лёгким холодным оттенком,
+       а не серой/молочной. */
     const lensMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0xf2fdff),
-      transmission: 0.96,
-      opacity: 0.34,
+      color: new THREE.Color(0xe9fbff),
+      transmission: 0.985,
+      opacity: 0.20,
       metalness: 0,
-      roughness: 0.006,
+      roughness: 0.012,
       ior: 1.52,
-      thickness: 0.38,
+      thickness: 0.34,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.006,
-      attenuationColor: new THREE.Color(0xe4fbff),
-      attenuationDistance: 4.5,
+      clearcoatRoughness: 0.01,
+      attenuationColor: new THREE.Color(0xa8e3ff),
+      attenuationDistance: 5.5,
       side: THREE.DoubleSide,
       transparent: true,
       depthWrite: false
@@ -388,10 +384,9 @@
 
     loader.load(
       MODEL_FILE,
-
       (gltf) => {
         const originalScene = gltf.scene;
-        let modelInner = originalScene;
+        const modelInner = originalScene;
 
         modelInner.traverse((obj) => {
           const name = (obj.name || "").toLowerCase();
@@ -414,15 +409,11 @@
             obj.material = microMaterial;
             obj.renderOrder = 30;
             microMeshes.push(obj);
-          }
-
-          else if (name.includes("edge") || name.includes("glow")) {
+          } else if (name.includes("edge") || name.includes("glow")) {
             obj.material = edgeMaterial;
             obj.renderOrder = 20;
             edgeMeshes.push(obj);
-          }
-
-          else if (name.includes("lens") || name.includes("glass")) {
+          } else if (name.includes("lens") || name.includes("glass")) {
             obj.material = lensMaterial;
             obj.renderOrder = 5;
           }
@@ -441,9 +432,8 @@
         modelRoot = pivot;
 
         const maxSize = Math.max(size.x, size.y, size.z);
-
-        modelRoot.scale.setScalar(3.72 / maxSize);
-        modelRoot.position.y = -0.16;
+        modelRoot.scale.setScalar(3.48 / maxSize);
+        modelRoot.position.y = -0.12;
 
         if (gltf.animations.length > 0) {
           mixer = new THREE.AnimationMixer(originalScene);
@@ -463,9 +453,7 @@
           introFinished = true;
         }
       },
-
       undefined,
-
       (error) => {
         console.error("Ошибка загрузки GLB:", error);
       }
@@ -489,7 +477,7 @@
       const distance = Math.sqrt(dx * dx + dy * dy);
       const minSide = Math.min(rect.width, rect.height);
 
-      const isInside = distance > minSide * 0.07 && distance < minSide * 0.43;
+      const isInside = distance > minSide * 0.07 && distance < minSide * 0.42;
 
       if (isHoveringMicro !== isInside) {
         isHoveringMicro = isInside;
@@ -507,11 +495,15 @@
       popupLine.classList.remove("active");
     });
 
-    container.addEventListener("touchstart", (event) => {
-      if (event.touches && event.touches[0]) {
-        checkPointer(event.touches[0]);
-      }
-    }, { passive: true });
+    container.addEventListener(
+      "touchstart",
+      (event) => {
+        if (event.touches && event.touches[0]) {
+          checkPointer(event.touches[0]);
+        }
+      },
+      { passive: true }
+    );
 
     function animate() {
       requestAnimationFrame(animate);
@@ -527,8 +519,8 @@
           idleAngle += delta * 0.46;
         }
 
-        targetRotation.x = mouse.y * 0.065;
-        targetRotation.y = mouse.x * 0.09 + Math.sin(idleAngle) * 0.11;
+        targetRotation.x = mouse.y * 0.06;
+        targetRotation.y = mouse.x * 0.085 + Math.sin(idleAngle) * 0.11;
 
         modelRoot.rotation.x += (targetRotation.x - modelRoot.rotation.x) * delta * 4;
         modelRoot.rotation.y += (targetRotation.y - modelRoot.rotation.y) * delta * 4;
@@ -536,22 +528,26 @@
         const targetHoverVal = isHoveringMicro ? 1 : 0;
         hoverProgress += (targetHoverVal - hoverProgress) * delta * 6;
 
-        microMaterial.opacity = 1.0;
-        microMaterial.emissiveIntensity = 1.15 + hoverProgress * 4.25;
+        microMaterial.opacity = 0.98;
+        microMaterial.emissiveIntensity = 0.95 + hoverProgress * 2.8;
         microMaterial.color.lerpColors(colorMicroBase, colorMicroHover, hoverProgress);
         microMaterial.emissive.lerpColors(emissiveBase, emissiveHover, hoverProgress);
 
-        edgeMaterial.opacity = 0.92 + hoverProgress * 0.08;
+        edgeMaterial.opacity = 0.85 + hoverProgress * 0.12;
 
-        lensMaterial.opacity = 0.34 + hoverProgress * 0.06;
-        lensMaterial.roughness = 0.006 + hoverProgress * 0.006;
+        /* Линза остаётся прозрачной, но на hover чуть лучше читается */
+        lensMaterial.opacity = 0.20 + hoverProgress * 0.04;
+        lensMaterial.roughness = 0.012 + hoverProgress * 0.004;
 
-        bloomPass.strength = 0.34 + hoverProgress * 2.35;
-        bloomPass.radius = 0.64 + hoverProgress * 0.34;
-        bloomPass.threshold = 0.13 - hoverProgress * 0.07;
+        /* Свечение микролинз как на примере — только при наведении сильнее */
+        bloomPass.strength = 0.24 + hoverProgress * 1.55;
+        bloomPass.radius = 0.55 + hoverProgress * 0.24;
+        bloomPass.threshold = 0.18 - hoverProgress * 0.07;
 
-        glintLight.intensity = hoverProgress * 2.8;
-        glintLight.position.x = -1.4 + Math.sin(clock.elapsedTime * 1.2) * 0.35;
+        /* Скользящий блик по стеклу */
+        glintLight.intensity = 0.35 + hoverProgress * 2.4;
+        glintLight.position.x = -1.25 + Math.sin(clock.elapsedTime * 1.15) * 0.55;
+        glintLight.position.y = 0.85 + Math.cos(clock.elapsedTime * 0.9) * 0.18;
       }
 
       composer.render();
