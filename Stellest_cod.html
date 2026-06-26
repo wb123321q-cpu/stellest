@@ -22,8 +22,8 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
+      background: #0c2f45;
       font-family: Arial, sans-serif;
-      background: #0a2638;
     }
 
     .stellest-hero {
@@ -32,10 +32,10 @@
       height: 100vh;
       overflow: hidden;
       background:
-        radial-gradient(circle at 22% 28%, rgba(126, 214, 255, 0.20), transparent 34%),
-        radial-gradient(circle at 70% 35%, rgba(53, 139, 190, 0.20), transparent 36%),
-        radial-gradient(circle at 50% 65%, rgba(4, 25, 42, 0.20), transparent 52%),
-        linear-gradient(145deg, #12364b 0%, #0c2a3e 42%, #071b2b 100%);
+        radial-gradient(circle at 24% 24%, rgba(138, 221, 255, 0.22), transparent 34%),
+        radial-gradient(circle at 68% 38%, rgba(64, 154, 210, 0.22), transparent 38%),
+        radial-gradient(circle at 50% 70%, rgba(5, 28, 45, 0.30), transparent 58%),
+        linear-gradient(145deg, #153f58 0%, #0e3048 44%, #071e31 100%);
     }
 
     .stellest-hero::before {
@@ -45,8 +45,8 @@
       top: 52%;
       width: 120%;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(170, 225, 255, 0.36), transparent);
-      box-shadow: 0 0 20px rgba(92, 185, 240, 0.28);
+      background: linear-gradient(90deg, transparent, rgba(170, 230, 255, 0.36), transparent);
+      box-shadow: 0 0 22px rgba(92, 185, 240, 0.28);
       z-index: 1;
       pointer-events: none;
     }
@@ -55,12 +55,13 @@
       content: "";
       position: absolute;
       left: 50%;
-      top: 52%;
+      top: 54%;
       width: 620px;
       height: 620px;
       transform: translate(-50%, -50%);
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(130, 215, 255, 0.10), rgba(60, 150, 205, 0.04) 38%, transparent 70%);
+      background:
+        radial-gradient(circle, rgba(130, 215, 255, 0.10), rgba(60, 150, 205, 0.04) 40%, transparent 72%);
       filter: blur(18px);
       z-index: 1;
       pointer-events: none;
@@ -104,6 +105,27 @@
       z-index: 2;
     }
 
+    .micro-aura {
+      position: absolute;
+      left: 50%;
+      top: 53%;
+      width: 360px;
+      height: 360px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(150, 230, 255, 0.16) 0%, rgba(90, 195, 245, 0.08) 42%, transparent 72%);
+      filter: blur(10px);
+      opacity: 0;
+      z-index: 3;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+
+    .micro-aura.active {
+      opacity: 1;
+    }
+
     .micro-popup {
       position: absolute;
       left: 50%;
@@ -112,7 +134,7 @@
       padding: 22px 24px;
       border: 1px solid rgba(180, 230, 255, 0.24);
       border-radius: 22px;
-      background: rgba(8, 28, 44, 0.58);
+      background: rgba(8, 28, 44, 0.62);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       box-shadow:
@@ -235,6 +257,7 @@
     </div>
 
     <div id="stellestCanvas"></div>
+    <div class="micro-aura" id="microAura"></div>
 
     <div class="popup-line" id="popupLine"></div>
 
@@ -251,13 +274,11 @@
     import * as THREE from "three";
     import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
     import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-    import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-    import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-    import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 
     const container = document.getElementById("stellestCanvas");
     const popup = document.getElementById("microPopup");
     const popupLine = document.getElementById("popupLine");
+    const microAura = document.getElementById("microAura");
 
     const MODEL_FILE = "./Stellest%202.0.glb";
 
@@ -282,39 +303,25 @@
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.92;
+    renderer.toneMappingExposure = 0.98;
 
     container.appendChild(renderer.domElement);
-
-    const composer = new EffectComposer(renderer);
-
-    const renderPass = new RenderPass(scene, camera);
-    composer.addPass(renderPass);
-
-    const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(container.clientWidth, container.clientHeight),
-      0.10,
-      0.34,
-      0.58
-    );
-
-    composer.addPass(bloomPass);
 
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
-    const ambient = new THREE.AmbientLight(0xcfefff, 0.66);
+    const ambient = new THREE.AmbientLight(0xcfefff, 0.72);
     scene.add(ambient);
 
-    const keyLight = new THREE.DirectionalLight(0xc8efff, 1.45);
+    const keyLight = new THREE.DirectionalLight(0xdaf5ff, 1.55);
     keyLight.position.set(-3, 3, 4);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x5dc2ff, 1.85);
+    const rimLight = new THREE.DirectionalLight(0x74cfff, 1.9);
     rimLight.position.set(3, -2, -2);
     scene.add(rimLight);
 
-    const softFrontLight = new THREE.PointLight(0xa8e8ff, 0.65, 8);
+    const softFrontLight = new THREE.PointLight(0xa8e8ff, 0.72, 8);
     softFrontLight.position.set(0, 0.7, 2.8);
     scene.add(softFrontLight);
 
@@ -326,21 +333,19 @@
     let idleAngle = 0;
 
     const clock = new THREE.Clock();
-    const mouse = new THREE.Vector2(0, 0);
-    const targetRotation = new THREE.Vector2(0, 0);
 
     const microBaseColor = new THREE.Color(0x9edfff);
-    const microHoverColor = new THREE.Color(0xdff8ff);
+    const microHoverColor = new THREE.Color(0xe3faff);
 
     const microBaseEmissive = new THREE.Color(0x1d88bd);
-    const microHoverEmissive = new THREE.Color(0x8cecff);
+    const microHoverEmissive = new THREE.Color(0x7fe4ff);
 
     const microMaterial = new THREE.MeshPhysicalMaterial({
       color: microBaseColor,
       emissive: microBaseEmissive,
-      emissiveIntensity: 0.18,
+      emissiveIntensity: 0.22,
       transparent: true,
-      opacity: 0.74,
+      opacity: 0.76,
       roughness: 0.16,
       transmission: 0.0,
       side: THREE.DoubleSide,
@@ -351,7 +356,7 @@
     const edgeMaterial = new THREE.MeshBasicMaterial({
       color: new THREE.Color(0x9edfff),
       transparent: true,
-      opacity: 0.62,
+      opacity: 0.66,
       side: THREE.DoubleSide,
       depthTest: false,
       depthWrite: false
@@ -459,14 +464,21 @@
       }
     );
 
+    function setHoverState(active) {
+      if (isHoveringMicro === active) return;
+
+      isHoveringMicro = active;
+
+      popup.classList.toggle("active", active);
+      popupLine.classList.toggle("active", active);
+      microAura.classList.toggle("active", active);
+    }
+
     function checkPointer(event) {
       const rect = container.getBoundingClientRect();
 
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-
-      mouse.x = (x / rect.width) * 2 - 1;
-      mouse.y = -(y / rect.height) * 2 + 1;
 
       const centerX = rect.width * 0.5;
       const centerY = rect.height * 0.53;
@@ -479,20 +491,13 @@
 
       const isInside = distance > minSide * 0.07 && distance < minSide * 0.42;
 
-      if (isHoveringMicro !== isInside) {
-        isHoveringMicro = isInside;
-        popup.classList.toggle("active", isInside);
-        popupLine.classList.toggle("active", isInside);
-      }
+      setHoverState(isInside);
     }
 
     container.addEventListener("mousemove", checkPointer);
 
     container.addEventListener("mouseleave", () => {
-      isHoveringMicro = false;
-      mouse.set(0, 0);
-      popup.classList.remove("active");
-      popupLine.classList.remove("active");
+      setHoverState(false);
     });
 
     container.addEventListener(
@@ -518,32 +523,28 @@
         if (!isHoveringMicro) {
           idleAngle += delta * 0.45;
 
-          targetRotation.x = 0;
-          targetRotation.y = Math.sin(idleAngle) * 0.11;
+          const targetX = 0;
+          const targetY = Math.sin(idleAngle) * 0.11;
 
-          modelRoot.rotation.x += (targetRotation.x - modelRoot.rotation.x) * delta * 4;
-          modelRoot.rotation.y += (targetRotation.y - modelRoot.rotation.y) * delta * 4;
+          modelRoot.rotation.x += (targetX - modelRoot.rotation.x) * delta * 4;
+          modelRoot.rotation.y += (targetY - modelRoot.rotation.y) * delta * 4;
         }
 
         const targetHoverVal = isHoveringMicro ? 1 : 0;
         hoverProgress += (targetHoverVal - hoverProgress) * delta * 5.5;
 
-        microMaterial.opacity = 0.74 + hoverProgress * 0.18;
-        microMaterial.emissiveIntensity = 0.18 + hoverProgress * 0.62;
+        microMaterial.opacity = 0.76 + hoverProgress * 0.18;
+        microMaterial.emissiveIntensity = 0.22 + hoverProgress * 0.58;
         microMaterial.color.lerpColors(microBaseColor, microHoverColor, hoverProgress);
         microMaterial.emissive.lerpColors(microBaseEmissive, microHoverEmissive, hoverProgress);
 
-        edgeMaterial.opacity = 0.62 + hoverProgress * 0.10;
+        edgeMaterial.opacity = 0.66 + hoverProgress * 0.10;
 
         lensMaterial.opacity = 0.22 + hoverProgress * 0.02;
         lensMaterial.roughness = 0.075 - hoverProgress * 0.018;
-
-        bloomPass.strength = 0.10 + hoverProgress * 0.34;
-        bloomPass.radius = 0.34 + hoverProgress * 0.14;
-        bloomPass.threshold = 0.58 - hoverProgress * 0.05;
       }
 
-      composer.render();
+      renderer.render(scene, camera);
     }
 
     animate();
@@ -553,7 +554,6 @@
       camera.updateProjectionMatrix();
 
       renderer.setSize(container.clientWidth, container.clientHeight);
-      composer.setSize(container.clientWidth, container.clientHeight);
     });
   </script>
 </body>
