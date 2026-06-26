@@ -32,7 +32,7 @@
       height: 100vh;
       overflow: hidden;
       background:
-        radial-gradient(circle at 50% 42%, rgba(55, 165, 255, 0.22) 0%, rgba(7, 24, 39, 0.82) 48%, rgba(2, 8, 18, 1) 100%),
+        radial-gradient(circle at 50% 44%, rgba(90, 190, 255, 0.22) 0%, rgba(8, 27, 45, 0.84) 45%, rgba(2, 8, 18, 1) 100%),
         linear-gradient(135deg, #04101c 0%, #010408 100%);
     }
 
@@ -40,28 +40,46 @@
       content: "";
       position: absolute;
       left: -10%;
-      top: 51%;
+      top: 52%;
       width: 120%;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(137, 207, 255, 0.45), transparent);
-      box-shadow: 0 0 22px rgba(72, 175, 255, 0.34);
+      background: linear-gradient(90deg, transparent, rgba(180, 230, 255, 0.42), transparent);
+      box-shadow: 0 0 26px rgba(72, 175, 255, 0.34);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .stellest-hero::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 520px;
+      height: 520px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(120, 210, 255, 0.12), transparent 68%);
+      filter: blur(18px);
       z-index: 1;
       pointer-events: none;
     }
 
     .stellest-brand {
       position: absolute;
-      top: 30px;
-      left: 34px;
-      z-index: 6;
-      color: #eaf7ff;
+      top: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 8;
+      text-align: center;
       pointer-events: none;
-      text-shadow: 0 0 28px rgba(93, 190, 255, 0.22);
+      color: #eaf7ff;
+      text-shadow: 0 0 28px rgba(93, 190, 255, 0.28);
+      white-space: nowrap;
     }
 
     .stellest-brand__eyebrow {
-      margin-bottom: 3px;
-      font-size: 13px;
+      margin-bottom: 4px;
+      font-size: 12px;
       line-height: 1;
       letter-spacing: 5px;
       font-weight: 700;
@@ -69,11 +87,11 @@
     }
 
     .stellest-brand__title {
-      font-size: clamp(34px, 7vw, 58px);
+      font-size: clamp(34px, 6vw, 54px);
       line-height: 0.95;
-      letter-spacing: -0.06em;
+      letter-spacing: -0.055em;
       font-weight: 300;
-      color: #dff4ff;
+      color: #e7f7ff;
     }
 
     #stellestCanvas {
@@ -89,20 +107,21 @@
       left: 50%;
       top: 50%;
       width: 320px;
-      padding: 26px 28px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 24px 26px;
+      border: 1px solid rgba(190, 235, 255, 0.24);
       border-radius: 24px;
-      background: rgba(10, 25, 45, 0.48);
+      background: rgba(8, 22, 38, 0.52);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       box-shadow:
-        0 16px 42px rgba(0, 0, 0, 0.42),
+        0 18px 48px rgba(0, 0, 0, 0.46),
+        0 0 54px rgba(88, 190, 255, 0.16),
         inset 0 1px 0 rgba(255, 255, 255, 0.20);
       color: #fff;
       opacity: 0;
       pointer-events: none;
-      z-index: 5;
-      transform: translate(118px, -110px) scale(0.95);
+      z-index: 7;
+      transform: translate(118px, -98px) scale(0.95);
       transition:
         opacity 0.36s cubic-bezier(0.16, 1, 0.3, 1),
         transform 0.36s cubic-bezier(0.16, 1, 0.3, 1);
@@ -110,7 +129,7 @@
 
     .micro-popup.active {
       opacity: 1;
-      transform: translate(138px, -110px) scale(1);
+      transform: translate(138px, -98px) scale(1);
     }
 
     .popup-num {
@@ -118,7 +137,7 @@
       font-size: 52px;
       line-height: 1;
       font-weight: 300;
-      background: linear-gradient(135deg, #ffffff 0%, #8bcfff 100%);
+      background: linear-gradient(135deg, #ffffff 0%, #9de5ff 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -128,7 +147,7 @@
       font-size: 18px;
       line-height: 1.2;
       font-weight: 650;
-      color: #bde4ff;
+      color: #bdeaff;
       text-transform: uppercase;
       letter-spacing: 1.5px;
     }
@@ -137,21 +156,21 @@
       margin: 0;
       font-size: 15px;
       line-height: 1.6;
-      color: rgba(255, 255, 255, 0.76);
+      color: rgba(255, 255, 255, 0.78);
     }
 
     .popup-line {
       position: absolute;
       left: 50%;
       top: 50%;
-      width: 160px;
+      width: 155px;
       height: 1px;
-      transform: translate(-18px, -4px);
-      background: linear-gradient(90deg, rgba(137, 207, 255, 0.9), transparent);
-      box-shadow: 0 0 18px rgba(72, 175, 255, 0.44);
+      transform: translate(-18px, 2px);
+      background: linear-gradient(90deg, rgba(170, 230, 255, 0.95), transparent);
+      box-shadow: 0 0 20px rgba(72, 175, 255, 0.52);
       opacity: 0;
       pointer-events: none;
-      z-index: 4;
+      z-index: 6;
       transition: opacity 0.3s ease;
     }
 
@@ -161,25 +180,24 @@
 
     @media (max-width: 900px) {
       .stellest-brand {
-        top: 22px;
-        left: 24px;
+        top: 18px;
       }
 
       .stellest-brand__eyebrow {
-        font-size: 11px;
+        font-size: 10px;
         letter-spacing: 4px;
       }
 
       .stellest-brand__title {
-        font-size: 38px;
+        font-size: 36px;
       }
 
       .micro-popup {
-        left: 20px;
-        right: 20px;
+        left: 18px;
+        right: 18px;
         top: auto;
-        bottom: 32px;
-        width: calc(100% - 40px);
+        bottom: 24px;
+        width: calc(100% - 36px);
         box-sizing: border-box;
         transform: translateY(18px) scale(0.96);
       }
@@ -190,6 +208,18 @@
 
       .popup-line {
         display: none;
+      }
+
+      .popup-num {
+        font-size: 42px;
+      }
+
+      .popup-title {
+        font-size: 16px;
+      }
+
+      .popup-text {
+        font-size: 14px;
       }
     }
   </style>
@@ -203,6 +233,7 @@
     </div>
 
     <div id="stellestCanvas"></div>
+
     <div class="popup-line" id="popupLine"></div>
 
     <div class="micro-popup" id="microPopup">
@@ -218,6 +249,9 @@
     import * as THREE from "three";
     import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
     import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+    import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+    import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+    import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 
     const container = document.getElementById("stellestCanvas");
     const popup = document.getElementById("microPopup");
@@ -228,20 +262,13 @@
     const scene = new THREE.Scene();
 
     const camera = new THREE.PerspectiveCamera(
-      27,
+      26,
       container.clientWidth / container.clientHeight,
       0.1,
       100
     );
 
-    /*
-      Было далеко:
-      camera.position.set(0, 0, 5.8);
-
-      Стало ближе:
-      камера чуть ближе + модель крупнее ниже по коду.
-    */
-    camera.position.set(0, 0, 4.55);
+    camera.position.set(0, 0, 4.25);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -253,27 +280,45 @@
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.22;
 
     container.appendChild(renderer.domElement);
+
+    const composer = new EffectComposer(renderer);
+
+    const renderPass = new RenderPass(scene, camera);
+    composer.addPass(renderPass);
+
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(container.clientWidth, container.clientHeight),
+      0.34,
+      0.64,
+      0.13
+    );
+
+    composer.addPass(bloomPass);
 
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.9);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.95);
     scene.add(ambient);
 
-    const keyLight = new THREE.DirectionalLight(0xd7f4ff, 2.7);
+    const keyLight = new THREE.DirectionalLight(0xe7f8ff, 2.8);
     keyLight.position.set(-3, 3, 4);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x62c9ff, 3.2);
+    const rimLight = new THREE.DirectionalLight(0x62c9ff, 3.4);
     rimLight.position.set(3, -2, -2);
     scene.add(rimLight);
 
-    const frontLight = new THREE.PointLight(0x8cdbff, 2.4, 8);
+    const frontLight = new THREE.PointLight(0xa8e8ff, 2.8, 8);
     frontLight.position.set(0, 0.8, 2.8);
     scene.add(frontLight);
+
+    const glintLight = new THREE.PointLight(0xffffff, 0.0, 5);
+    glintLight.position.set(-1.6, 0.6, 2.1);
+    scene.add(glintLight);
 
     let mixer = null;
     let modelRoot = null;
@@ -290,46 +335,50 @@
     const mouse = new THREE.Vector2(0, 0);
     const targetRotation = new THREE.Vector2(0, 0);
 
-    const colorMicroBase = new THREE.Color(0xb7ecff);
+    const colorMicroBase = new THREE.Color(0xc7f2ff);
     const colorMicroHover = new THREE.Color(0xffffff);
 
-    const emissiveBase = new THREE.Color(0x229cff);
-    const emissiveHover = new THREE.Color(0x8be7ff);
+    const emissiveBase = new THREE.Color(0x37b7ff);
+    const emissiveHover = new THREE.Color(0xe4fdff);
 
     const microMaterial = new THREE.MeshPhysicalMaterial({
       color: colorMicroBase,
       emissive: emissiveBase,
-      emissiveIntensity: 0.62,
+      emissiveIntensity: 1.15,
       transparent: true,
-      opacity: 0.95,
-      roughness: 0.08,
-      transmission: 0.08,
+      opacity: 1.0,
+      roughness: 0.035,
+      transmission: 0.0,
       side: THREE.DoubleSide,
       depthTest: false,
       depthWrite: false
     });
 
     const edgeMaterial = new THREE.MeshBasicMaterial({
-      color: new THREE.Color(0x8bcfff),
+      color: new THREE.Color(0xb6eeff),
       transparent: true,
-      opacity: 0.95,
+      opacity: 0.92,
       side: THREE.DoubleSide,
       depthTest: false,
       depthWrite: false
     });
 
+    /*
+      Эффект ближе к Advanced Aesthetic:
+      стекло почти бесцветное, читается за счёт края, бликов и микроструктуры.
+    */
     const lensMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0x70cfff),
-      transmission: 0.88,
-      opacity: 0.74,
+      color: new THREE.Color(0xf2fdff),
+      transmission: 0.96,
+      opacity: 0.34,
       metalness: 0,
-      roughness: 0.018,
+      roughness: 0.006,
       ior: 1.52,
-      thickness: 0.55,
+      thickness: 0.38,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.018,
-      attenuationColor: new THREE.Color(0x5caeff),
-      attenuationDistance: 2.0,
+      clearcoatRoughness: 0.006,
+      attenuationColor: new THREE.Color(0xe4fbff),
+      attenuationDistance: 4.5,
       side: THREE.DoubleSide,
       transparent: true,
       depthWrite: false
@@ -393,19 +442,8 @@
 
         const maxSize = Math.max(size.x, size.y, size.z);
 
-        /*
-          Было:
-          modelRoot.scale.setScalar(2.6 / maxSize);
-
-          Стало крупнее:
-          3.35 / maxSize.
-        */
-        modelRoot.scale.setScalar(3.35 / maxSize);
-
-        /*
-          Слегка опускаем линзу вниз, чтобы сверху спокойно стоял текст.
-        */
-        modelRoot.position.y = -0.12;
+        modelRoot.scale.setScalar(3.72 / maxSize);
+        modelRoot.position.y = -0.16;
 
         if (gltf.animations.length > 0) {
           mixer = new THREE.AnimationMixer(originalScene);
@@ -451,10 +489,7 @@
       const distance = Math.sqrt(dx * dx + dy * dy);
       const minSide = Math.min(rect.width, rect.height);
 
-      /*
-        Зона наведения стала больше, потому что линза теперь крупнее.
-      */
-      const isInside = distance > minSide * 0.07 && distance < minSide * 0.42;
+      const isInside = distance > minSide * 0.07 && distance < minSide * 0.43;
 
       if (isHoveringMicro !== isInside) {
         isHoveringMicro = isInside;
@@ -489,11 +524,11 @@
 
       if (modelRoot && introFinished) {
         if (!isHoveringMicro) {
-          idleAngle += delta * 0.48;
+          idleAngle += delta * 0.46;
         }
 
-        targetRotation.x = mouse.y * 0.08;
-        targetRotation.y = mouse.x * 0.10 + Math.sin(idleAngle) * 0.12;
+        targetRotation.x = mouse.y * 0.065;
+        targetRotation.y = mouse.x * 0.09 + Math.sin(idleAngle) * 0.11;
 
         modelRoot.rotation.x += (targetRotation.x - modelRoot.rotation.x) * delta * 4;
         modelRoot.rotation.y += (targetRotation.y - modelRoot.rotation.y) * delta * 4;
@@ -501,15 +536,25 @@
         const targetHoverVal = isHoveringMicro ? 1 : 0;
         hoverProgress += (targetHoverVal - hoverProgress) * delta * 6;
 
-        microMaterial.opacity = 0.95 + hoverProgress * 0.05;
-        microMaterial.emissiveIntensity = 0.62 + hoverProgress * 0.62;
+        microMaterial.opacity = 1.0;
+        microMaterial.emissiveIntensity = 1.15 + hoverProgress * 4.25;
         microMaterial.color.lerpColors(colorMicroBase, colorMicroHover, hoverProgress);
         microMaterial.emissive.lerpColors(emissiveBase, emissiveHover, hoverProgress);
 
-        edgeMaterial.opacity = 0.95 + hoverProgress * 0.05;
+        edgeMaterial.opacity = 0.92 + hoverProgress * 0.08;
+
+        lensMaterial.opacity = 0.34 + hoverProgress * 0.06;
+        lensMaterial.roughness = 0.006 + hoverProgress * 0.006;
+
+        bloomPass.strength = 0.34 + hoverProgress * 2.35;
+        bloomPass.radius = 0.64 + hoverProgress * 0.34;
+        bloomPass.threshold = 0.13 - hoverProgress * 0.07;
+
+        glintLight.intensity = hoverProgress * 2.8;
+        glintLight.position.x = -1.4 + Math.sin(clock.elapsedTime * 1.2) * 0.35;
       }
 
-      renderer.render(scene, camera);
+      composer.render();
     }
 
     animate();
@@ -517,7 +562,9 @@
     window.addEventListener("resize", () => {
       camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();
+
       renderer.setSize(container.clientWidth, container.clientHeight);
+      composer.setSize(container.clientWidth, container.clientHeight);
     });
   </script>
 </body>
