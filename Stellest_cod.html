@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Stellest 3D Lens</title>
 
   <script type="importmap">
@@ -22,7 +23,7 @@
       height: 100%;
       overflow: hidden;
       font-family: Arial, sans-serif;
-      background: #020812;
+      background: #0a2638;
     }
 
     .stellest-hero {
@@ -31,8 +32,10 @@
       height: 100vh;
       overflow: hidden;
       background:
-        radial-gradient(circle at 50% 44%, rgba(90, 190, 255, 0.22) 0%, rgba(8, 27, 45, 0.84) 45%, rgba(2, 8, 18, 1) 100%),
-        linear-gradient(135deg, #04101c 0%, #010408 100%);
+        radial-gradient(circle at 22% 28%, rgba(126, 214, 255, 0.20), transparent 34%),
+        radial-gradient(circle at 70% 35%, rgba(53, 139, 190, 0.20), transparent 36%),
+        radial-gradient(circle at 50% 65%, rgba(4, 25, 42, 0.20), transparent 52%),
+        linear-gradient(145deg, #12364b 0%, #0c2a3e 42%, #071b2b 100%);
     }
 
     .stellest-hero::before {
@@ -42,8 +45,8 @@
       top: 52%;
       width: 120%;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(180, 230, 255, 0.42), transparent);
-      box-shadow: 0 0 26px rgba(72, 175, 255, 0.34);
+      background: linear-gradient(90deg, transparent, rgba(170, 225, 255, 0.36), transparent);
+      box-shadow: 0 0 20px rgba(92, 185, 240, 0.28);
       z-index: 1;
       pointer-events: none;
     }
@@ -52,12 +55,12 @@
       content: "";
       position: absolute;
       left: 50%;
-      top: 50%;
-      width: 560px;
-      height: 560px;
+      top: 52%;
+      width: 620px;
+      height: 620px;
       transform: translate(-50%, -50%);
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(120, 210, 255, 0.12), transparent 70%);
+      background: radial-gradient(circle, rgba(130, 215, 255, 0.10), rgba(60, 150, 205, 0.04) 38%, transparent 70%);
       filter: blur(18px);
       z-index: 1;
       pointer-events: none;
@@ -65,30 +68,30 @@
 
     .stellest-brand {
       position: absolute;
-      top: 22px;
+      top: 18px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
       text-align: center;
       pointer-events: none;
       color: #eaf7ff;
-      text-shadow: 0 0 28px rgba(93, 190, 255, 0.28);
+      text-shadow: 0 0 24px rgba(93, 190, 255, 0.22);
       white-space: nowrap;
     }
 
     .stellest-brand__eyebrow {
       margin-bottom: 4px;
-      font-size: 12px;
+      font-size: 10px;
       line-height: 1;
-      letter-spacing: 5px;
+      letter-spacing: 4px;
       font-weight: 700;
-      opacity: 0.86;
+      opacity: 0.78;
     }
 
     .stellest-brand__title {
-      font-size: clamp(34px, 6vw, 54px);
+      font-size: clamp(28px, 5vw, 42px);
       line-height: 0.95;
-      letter-spacing: -0.055em;
+      letter-spacing: -0.045em;
       font-weight: 300;
       color: #e7f7ff;
     }
@@ -105,35 +108,35 @@
       position: absolute;
       left: 50%;
       top: 50%;
-      width: 320px;
-      padding: 24px 26px;
-      border: 1px solid rgba(190, 235, 255, 0.24);
-      border-radius: 24px;
-      background: rgba(8, 22, 38, 0.52);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      width: 315px;
+      padding: 22px 24px;
+      border: 1px solid rgba(180, 230, 255, 0.24);
+      border-radius: 22px;
+      background: rgba(8, 28, 44, 0.58);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       box-shadow:
-        0 18px 48px rgba(0, 0, 0, 0.46),
-        0 0 54px rgba(88, 190, 255, 0.16),
-        inset 0 1px 0 rgba(255, 255, 255, 0.20);
+        0 16px 40px rgba(0, 0, 0, 0.28),
+        0 0 34px rgba(88, 190, 255, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.16);
       color: #fff;
       opacity: 0;
       pointer-events: none;
       z-index: 7;
-      transform: translate(118px, -98px) scale(0.95);
+      transform: translate(112px, -90px) scale(0.96);
       transition:
-        opacity 0.36s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity 0.32s ease,
+        transform 0.32s ease;
     }
 
     .micro-popup.active {
       opacity: 1;
-      transform: translate(138px, -98px) scale(1);
+      transform: translate(130px, -90px) scale(1);
     }
 
     .popup-num {
-      margin-bottom: 8px;
-      font-size: 52px;
+      margin-bottom: 6px;
+      font-size: 46px;
       line-height: 1;
       font-weight: 300;
       background: linear-gradient(135deg, #ffffff 0%, #9de5ff 100%);
@@ -143,18 +146,18 @@
 
     .popup-title {
       margin-bottom: 12px;
-      font-size: 18px;
+      font-size: 17px;
       line-height: 1.2;
       font-weight: 650;
       color: #bdeaff;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.3px;
     }
 
     .popup-text {
       margin: 0;
-      font-size: 15px;
-      line-height: 1.6;
+      font-size: 14px;
+      line-height: 1.58;
       color: rgba(255, 255, 255, 0.78);
     }
 
@@ -162,15 +165,15 @@
       position: absolute;
       left: 50%;
       top: 50%;
-      width: 155px;
+      width: 145px;
       height: 1px;
-      transform: translate(-18px, 2px);
-      background: linear-gradient(90deg, rgba(170, 230, 255, 0.95), transparent);
-      box-shadow: 0 0 20px rgba(72, 175, 255, 0.52);
+      transform: translate(-16px, 4px);
+      background: linear-gradient(90deg, rgba(170, 230, 255, 0.72), transparent);
+      box-shadow: 0 0 14px rgba(72, 175, 255, 0.32);
       opacity: 0;
       pointer-events: none;
       z-index: 6;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.28s ease;
     }
 
     .popup-line.active {
@@ -179,23 +182,23 @@
 
     @media (max-width: 900px) {
       .stellest-brand {
-        top: 18px;
+        top: 16px;
       }
 
       .stellest-brand__eyebrow {
-        font-size: 10px;
-        letter-spacing: 4px;
+        font-size: 9px;
+        letter-spacing: 3px;
       }
 
       .stellest-brand__title {
-        font-size: 36px;
+        font-size: 32px;
       }
 
       .micro-popup {
         left: 18px;
         right: 18px;
         top: auto;
-        bottom: 24px;
+        bottom: 22px;
         width: calc(100% - 36px);
         box-sizing: border-box;
         transform: translateY(18px) scale(0.96);
@@ -210,11 +213,11 @@
       }
 
       .popup-num {
-        font-size: 42px;
+        font-size: 40px;
       }
 
       .popup-title {
-        font-size: 16px;
+        font-size: 15px;
       }
 
       .popup-text {
@@ -267,7 +270,7 @@
       100
     );
 
-    camera.position.set(0, 0, 4.45);
+    camera.position.set(0, 0, 4.55);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -279,43 +282,41 @@
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.08;
+    renderer.toneMappingExposure = 0.92;
 
     container.appendChild(renderer.domElement);
 
     const composer = new EffectComposer(renderer);
+
     const renderPass = new RenderPass(scene, camera);
     composer.addPass(renderPass);
 
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(container.clientWidth, container.clientHeight),
-      0.24,
-      0.55,
-      0.18
+      0.10,
+      0.34,
+      0.58
     );
+
     composer.addPass(bloomPass);
 
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.82);
+    const ambient = new THREE.AmbientLight(0xcfefff, 0.66);
     scene.add(ambient);
 
-    const keyLight = new THREE.DirectionalLight(0xdff4ff, 2.2);
+    const keyLight = new THREE.DirectionalLight(0xc8efff, 1.45);
     keyLight.position.set(-3, 3, 4);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x5dc2ff, 2.9);
+    const rimLight = new THREE.DirectionalLight(0x5dc2ff, 1.85);
     rimLight.position.set(3, -2, -2);
     scene.add(rimLight);
 
-    const frontLight = new THREE.PointLight(0xa8e8ff, 1.8, 8);
-    frontLight.position.set(0, 0.7, 2.8);
-    scene.add(frontLight);
-
-    const glintLight = new THREE.PointLight(0xffffff, 0.0, 6);
-    glintLight.position.set(-1.35, 0.8, 2.2);
-    scene.add(glintLight);
+    const softFrontLight = new THREE.PointLight(0xa8e8ff, 0.65, 8);
+    softFrontLight.position.set(0, 0.7, 2.8);
+    scene.add(softFrontLight);
 
     let mixer = null;
     let modelRoot = null;
@@ -324,26 +325,23 @@
     let hoverProgress = 0;
     let idleAngle = 0;
 
-    const microMeshes = [];
-    const edgeMeshes = [];
-
     const clock = new THREE.Clock();
     const mouse = new THREE.Vector2(0, 0);
     const targetRotation = new THREE.Vector2(0, 0);
 
-    const colorMicroBase = new THREE.Color(0xbfefff);
-    const colorMicroHover = new THREE.Color(0xffffff);
+    const microBaseColor = new THREE.Color(0x9edfff);
+    const microHoverColor = new THREE.Color(0xdff8ff);
 
-    const emissiveBase = new THREE.Color(0x36b4ff);
-    const emissiveHover = new THREE.Color(0xe7fdff);
+    const microBaseEmissive = new THREE.Color(0x1d88bd);
+    const microHoverEmissive = new THREE.Color(0x8cecff);
 
     const microMaterial = new THREE.MeshPhysicalMaterial({
-      color: colorMicroBase,
-      emissive: emissiveBase,
-      emissiveIntensity: 0.95,
+      color: microBaseColor,
+      emissive: microBaseEmissive,
+      emissiveIntensity: 0.18,
       transparent: true,
-      opacity: 0.98,
-      roughness: 0.05,
+      opacity: 0.74,
+      roughness: 0.16,
       transmission: 0.0,
       side: THREE.DoubleSide,
       depthTest: false,
@@ -351,30 +349,26 @@
     });
 
     const edgeMaterial = new THREE.MeshBasicMaterial({
-      color: new THREE.Color(0x9adfff),
+      color: new THREE.Color(0x9edfff),
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.62,
       side: THREE.DoubleSide,
       depthTest: false,
       depthWrite: false
     });
 
-    /* Главное изменение:
-       возвращаем красивый прошлый фон,
-       а линзу делаем прозрачной с лёгким холодным оттенком,
-       а не серой/молочной. */
     const lensMaterial = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(0xe9fbff),
-      transmission: 0.985,
-      opacity: 0.20,
+      color: new THREE.Color(0xb7dce8),
+      transmission: 0.78,
+      opacity: 0.22,
       metalness: 0,
-      roughness: 0.012,
+      roughness: 0.075,
       ior: 1.52,
-      thickness: 0.34,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.01,
-      attenuationColor: new THREE.Color(0xa8e3ff),
-      attenuationDistance: 5.5,
+      thickness: 0.36,
+      clearcoat: 0.72,
+      clearcoatRoughness: 0.07,
+      attenuationColor: new THREE.Color(0x8fcbe0),
+      attenuationDistance: 7.0,
       side: THREE.DoubleSide,
       transparent: true,
       depthWrite: false
@@ -384,6 +378,7 @@
 
     loader.load(
       MODEL_FILE,
+
       (gltf) => {
         const originalScene = gltf.scene;
         const modelInner = originalScene;
@@ -408,12 +403,14 @@
           if (name.includes("micro")) {
             obj.material = microMaterial;
             obj.renderOrder = 30;
-            microMeshes.push(obj);
-          } else if (name.includes("edge") || name.includes("glow")) {
+          }
+
+          else if (name.includes("edge") || name.includes("glow")) {
             obj.material = edgeMaterial;
             obj.renderOrder = 20;
-            edgeMeshes.push(obj);
-          } else if (name.includes("lens") || name.includes("glass")) {
+          }
+
+          else if (name.includes("lens") || name.includes("glass")) {
             obj.material = lensMaterial;
             obj.renderOrder = 5;
           }
@@ -432,7 +429,8 @@
         modelRoot = pivot;
 
         const maxSize = Math.max(size.x, size.y, size.z);
-        modelRoot.scale.setScalar(3.48 / maxSize);
+
+        modelRoot.scale.setScalar(3.44 / maxSize);
         modelRoot.position.y = -0.12;
 
         if (gltf.animations.length > 0) {
@@ -453,7 +451,9 @@
           introFinished = true;
         }
       },
+
       undefined,
+
       (error) => {
         console.error("Ошибка загрузки GLB:", error);
       }
@@ -516,38 +516,31 @@
 
       if (modelRoot && introFinished) {
         if (!isHoveringMicro) {
-          idleAngle += delta * 0.46;
+          idleAngle += delta * 0.45;
+
+          targetRotation.x = 0;
+          targetRotation.y = Math.sin(idleAngle) * 0.11;
+
+          modelRoot.rotation.x += (targetRotation.x - modelRoot.rotation.x) * delta * 4;
+          modelRoot.rotation.y += (targetRotation.y - modelRoot.rotation.y) * delta * 4;
         }
 
-        targetRotation.x = mouse.y * 0.06;
-        targetRotation.y = mouse.x * 0.085 + Math.sin(idleAngle) * 0.11;
-
-        modelRoot.rotation.x += (targetRotation.x - modelRoot.rotation.x) * delta * 4;
-        modelRoot.rotation.y += (targetRotation.y - modelRoot.rotation.y) * delta * 4;
-
         const targetHoverVal = isHoveringMicro ? 1 : 0;
-        hoverProgress += (targetHoverVal - hoverProgress) * delta * 6;
+        hoverProgress += (targetHoverVal - hoverProgress) * delta * 5.5;
 
-        microMaterial.opacity = 0.98;
-        microMaterial.emissiveIntensity = 0.95 + hoverProgress * 2.8;
-        microMaterial.color.lerpColors(colorMicroBase, colorMicroHover, hoverProgress);
-        microMaterial.emissive.lerpColors(emissiveBase, emissiveHover, hoverProgress);
+        microMaterial.opacity = 0.74 + hoverProgress * 0.18;
+        microMaterial.emissiveIntensity = 0.18 + hoverProgress * 0.62;
+        microMaterial.color.lerpColors(microBaseColor, microHoverColor, hoverProgress);
+        microMaterial.emissive.lerpColors(microBaseEmissive, microHoverEmissive, hoverProgress);
 
-        edgeMaterial.opacity = 0.85 + hoverProgress * 0.12;
+        edgeMaterial.opacity = 0.62 + hoverProgress * 0.10;
 
-        /* Линза остаётся прозрачной, но на hover чуть лучше читается */
-        lensMaterial.opacity = 0.20 + hoverProgress * 0.04;
-        lensMaterial.roughness = 0.012 + hoverProgress * 0.004;
+        lensMaterial.opacity = 0.22 + hoverProgress * 0.02;
+        lensMaterial.roughness = 0.075 - hoverProgress * 0.018;
 
-        /* Свечение микролинз как на примере — только при наведении сильнее */
-        bloomPass.strength = 0.24 + hoverProgress * 1.55;
-        bloomPass.radius = 0.55 + hoverProgress * 0.24;
-        bloomPass.threshold = 0.18 - hoverProgress * 0.07;
-
-        /* Скользящий блик по стеклу */
-        glintLight.intensity = 0.35 + hoverProgress * 2.4;
-        glintLight.position.x = -1.25 + Math.sin(clock.elapsedTime * 1.15) * 0.55;
-        glintLight.position.y = 0.85 + Math.cos(clock.elapsedTime * 0.9) * 0.18;
+        bloomPass.strength = 0.10 + hoverProgress * 0.34;
+        bloomPass.radius = 0.34 + hoverProgress * 0.14;
+        bloomPass.threshold = 0.58 - hoverProgress * 0.05;
       }
 
       composer.render();
